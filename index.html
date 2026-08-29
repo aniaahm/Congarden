@@ -871,28 +871,33 @@ function seedData(){
     {id:uid(), title:"17 printable designs you can make", description:"Round up of cute printable ideas for the shop.",
       category:"Design", status:"seed", favorite:true, priority:2, series:null,
       dateAdded: daysAgo(2), scheduledDate:null, platforms:["Instagram"], hook:"", caption:"", longDescription:"",
-      tasks: defaultTasks(), script:"", notes:[]},
+      tasks: defaultTasks(), script:"", notes:"", assets:[]},
     {id:uid(), title:"Editing Recipes #02: Backgrounds", description:"How I build layered backgrounds fast.",
       category:"Editing", status:"planning", favorite:false, priority:3, series:s1,
       dateAdded: daysAgo(5), scheduledDate: inDays(3), platforms:["YouTube","TikTok"], hook:"okay but this background trick changed everything",
-      caption:"episode 02 of editing recipes 🎬", longDescription:"", tasks: defaultTasks(), script:"", notes:[]},
+      caption:"episode 02 of editing recipes 🎬", longDescription:"", tasks: defaultTasks(), script:"", notes:"", assets:[]},
     {id:uid(), title:"Short notes methods that actually work", description:"3 note-taking systems I actually kept using.",
       category:"Study", status:"filming", favorite:true, priority:2, series:s2,
       dateAdded: daysAgo(9), scheduledDate: inDays(1), platforms:["Instagram","YouTube"], hook:"", caption:"", longDescription:"",
-      tasks: defaultTasks(true), script:"", notes:[]},
+      tasks: defaultTasks(true), script:"", notes:"", assets:[]},
     {id:uid(), title:"Music finds — cozy autumn playlist", description:"Songs on repeat this month.",
       category:"Music", status:"ready", favorite:false, priority:1, series:null,
       dateAdded: daysAgo(12), scheduledDate: inDays(0), platforms:["Instagram"], hook:"", caption:"", longDescription:"",
-      tasks: defaultTasks(true,true), script:"", notes:[]},
+      tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
     {id:uid(), title:"Design inspo — soft scrapbook layouts", description:"Layout ideas gathered this week.",
       category:"Design", status:"posted", favorite:false, priority:1, series:null,
       dateAdded: daysAgo(20), scheduledDate: daysAgo(3), postedDate: daysAgo(3), platforms:["Instagram"], hook:"", caption:"", longDescription:"",
-      tasks: defaultTasks(true,true), script:"", notes:[]},
+      tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
     {id:uid(), title:"Plan with me — weekly reset", description:"", category:"Personal", status:"posted",
       favorite:false, priority:1, series:null, dateAdded: daysAgo(30), scheduledDate: daysAgo(15), postedDate: daysAgo(15),
-      platforms:["YouTube"], hook:"", caption:"", longDescription:"", tasks: defaultTasks(true,true), script:"", notes:[]},
-
-  return {items, series};
+      platforms:["YouTube"], hook:"", caption:"", longDescription:"", tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
+  ];
+  const assets = [
+    {id:uid(), name:"warm film grain overlay", category:"Overlays", tags:["grain","warm"], note:"", dateAdded: daysAgo(14)},
+    {id:uid(), name:"bellota + imprima pairing.png", category:"Fonts", tags:["pairing"], note:"", dateAdded: daysAgo(20)},
+    {id:uid(), name:"soft piano loop 01", category:"Music", tags:["calm","piano"], note:"", dateAdded: daysAgo(6)},
+  ];
+  return {items, series, assets};
 }
 function defaultTasks(a,b){
   const base = ["Collect references","Record screen","Edit video","Add text","Add sound effects","Create thumbnail","Write caption","Schedule post"];
@@ -1145,7 +1150,7 @@ function renderMiniCalendar(){
 function createBlankItem(title){
   return {id:uid(), title: title||"untitled idea", description:"", category:"Other", status:"seed",
     favorite:false, priority:1, series:null, dateAdded: todayISO(), scheduledDate:null,
-    platforms:[], hook:"", caption:"", longDescription:"", tasks: defaultTasks(), script:"", notes:[]};
+    platforms:[], hook:"", caption:"", longDescription:"", tasks: defaultTasks(), script:"", notes:"", assets:[]};
 }
 
 /* ============================================================
@@ -1490,6 +1495,7 @@ function contentDetailHTML(item){
     <button class="tab-btn active" data-tab="overview">Overview</button>
     <button class="tab-btn" data-tab="script">Script</button>
     <button class="tab-btn" data-tab="tasks">Tasks</button>
+    <button class="tab-btn" data-tab="assets">Assets</button>
     <button class="tab-btn" data-tab="notes">Notes</button>
   </div>
 
@@ -1524,6 +1530,14 @@ function contentDetailHTML(item){
     <div style="display:flex;gap:6px;margin-top:10px;">
       <input type="text" id="newTaskInput" placeholder="add a task..." style="flex:1;font-family:var(--font-body);padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--ivory);">
       <button class="btn btn-outline btn-sm" id="addTaskBtn">＋ Add</button>
+    </div>
+  </div>
+
+  <div class="tab-pane" data-pane="assets">
+    <div class="asset-drop" id="itemAssetDrop">click to attach a reference / file<br><span style="font-size:11px;">(saved as a note — this demo stores file names, not binary uploads)</span></div>
+    <input type="file" id="itemAssetInput" multiple style="display:none;">
+    <div class="asset-mini-grid">
+      ${(item.assets||[]).map(a=>`<div class="asset-mini"><button class="rm" data-rm-item-asset="${a.id}">✕</button><span class="ic">${ASSET_ICON[a.category]||"📎"}</span>${escapeHTML(a.name)}</div>`).join("") || `<span style="color:var(--ink-faint);font-size:12px;">no assets attached yet</span>`}
     </div>
   </div>
 
@@ -1603,18 +1617,28 @@ function attachDetailHandlers(container, itemId, onChange){
     });
   });
   const addTaskBtn = container.querySelector("#addTaskBtn");
-if(addTaskBtn) addTaskBtn.addEventListener("click", ()=>{
-  const inp = container.querySelector("#newTaskInput");
-  if(inp.value.trim()){
-    item.tasks.push({
-      id:uid(),
-      text:inp.value.trim(),
-      done:false
+  if(addTaskBtn) addTaskBtn.addEventListener("click", ()=>{
+    const inp = container.querySelector("#newTaskInput");
+    if(inp.value.trim()){ item.tasks.push({id:uid(), text:inp.value.trim(), done:false}); persist(); onChange(); }
+  });
+
+  const dropZone = container.querySelector("#itemAssetDrop");
+  const assetInput = container.querySelector("#itemAssetInput");
+  if(dropZone){
+    dropZone.addEventListener("click", ()=> assetInput.click());
+    assetInput.addEventListener("change", ()=>{
+      Array.from(assetInput.files).forEach(f=>{
+        item.assets = item.assets || [];
+        item.assets.push({id:uid(), name:f.name, category:"References"});
+      });
+      persist(); onChange();
     });
-    persist();
-    onChange();
   }
-});
+  container.querySelectorAll("[data-rm-item-asset]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      item.assets = item.assets.filter(a=>a.id!==btn.dataset.rmItemAsset); persist(); onChange();
+    });
+  });
 
   const delBtn = container.querySelector("[data-del-item]");
   if(delBtn) delBtn.addEventListener("click", ()=>{
