@@ -471,16 +471,6 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;margin:0;color:var(--in
 .archive-title{font-family:var(--font-nav);font-weight:700;font-size:13.5px;}
 .archive-meta{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-top:5px;}
 
-/* ---- Assets page ---- */
-.asset-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:22px;}
-.asset-cat-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:transform .12s;}
-.asset-cat-card:hover{transform:translateY(-2px);}
-.asset-cat-card .ic{font-size:24px;}
-.asset-cat-card .n{font-family:var(--font-nav);font-weight:700;font-size:13px;margin-top:6px;}
-.asset-cat-card .c{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
-.asset-cat-card.active{border-color:var(--sage-deep);background:var(--sage);}
-.asset-full-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
-.asset-tag{font-family:var(--font-mono);font-size:9px;background:var(--ivory);border:1px solid var(--line);border-radius:10px;padding:2px 6px;display:inline-block;margin:2px 2px 0 0;}
 
 /* ---- Analytics ---- */
 .an-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
@@ -573,7 +563,6 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;margin:0;color:var(--in
         <li class="nav-item" data-view="series"><span class="ic">🌿</span>Series</li>
         <li class="nav-item" data-view="calendar"><span class="ic">📅</span>Content Calendar</li>
         <li class="nav-item" data-view="contentbox"><span class="ic">📝</span>Content Box</li>
-        <li class="nav-item" data-view="assets"><span class="ic">🗂</span>Assets</li>
         <li class="nav-item" data-view="archive"><span class="ic">🌼</span>Archive</li>
         <li class="nav-item" data-view="analytics"><span class="ic">📊</span>Analytics</li>
       </ul>
@@ -782,22 +771,6 @@ h1,h2,h3{font-family:var(--font-display);font-weight:400;margin:0;color:var(--in
       <div class="archive-grid" id="archiveGrid"></div>
     </section>
 
-    <!-- ================= ASSETS ================= -->
-    <section class="view" id="view-assets">
-      <div class="page-header">
-        <div>
-          <span class="page-eyebrow">🗂 assets</span>
-          <h2>Assets</h2>
-          <div class="page-sub">reusable bits and pieces for the garden</div>
-        </div>
-        <button class="btn btn-primary" id="assetUploadBtn">＋ Add Asset</button>
-      </div>
-      <div class="asset-cat-grid" id="assetCatGrid"></div>
-      <div class="filter-bar">
-        <div class="search-box"><span>🔍</span><input type="text" id="assetSearch" placeholder="search assets or tags..."></div>
-      </div>
-      <div class="asset-full-grid" id="assetGrid"></div>
-    </section>
 
     <!-- ================= ANALYTICS ================= -->
     <section class="view" id="view-analytics">
@@ -1016,7 +989,6 @@ function renderView(view){
   else if(view==="calendar") renderCalendar();
   else if(view==="contentbox") renderContentBox();
   else if(view==="archive") renderArchive();
-  else if(view==="assets") renderAssets();
   else if(view==="analytics") renderAnalytics();
 }
 
@@ -1802,69 +1774,6 @@ function renderArchive(){
   document.getElementById(id).addEventListener("change", renderArchive);
 });
 
-/* ============================================================
-   ASSETS
-============================================================ */
-let assetCatFilter = "all", assetSearch="";
-function renderAssets(){
-  const catGrid = document.getElementById("assetCatGrid");
-  catGrid.innerHTML = `<div class="asset-cat-card ${assetCatFilter==='all'?'active':''}" data-cat="all"><span class="ic">✿</span><div class="n">All</div><div class="c">${DB.assets.length} items</div></div>` +
-    ASSET_CATS.map(c=>{
-      const count = DB.assets.filter(a=>a.category===c).length;
-      return `<div class="asset-cat-card ${assetCatFilter===c?'active':''}" data-cat="${c}">
-        <span class="ic">${ASSET_ICON[c]}</span><div class="n">${c}</div><div class="c">${count} items</div>
-      </div>`;
-    }).join("");
-  catGrid.querySelectorAll("[data-cat]").forEach(el=> el.addEventListener("click", ()=>{ assetCatFilter = el.dataset.cat; renderAssets(); }));
-
-  let items = [...DB.assets];
-  if(assetCatFilter!=="all") items = items.filter(a=>a.category===assetCatFilter);
-  if(assetSearch) items = items.filter(a=> a.name.toLowerCase().includes(assetSearch.toLowerCase()) || (a.tags||[]).some(t=>t.toLowerCase().includes(assetSearch.toLowerCase())));
-
-  const grid = document.getElementById("assetGrid");
-  if(!items.length){ grid.innerHTML = emptyState("no assets here yet 🗂","add backgrounds, fonts, stickers, and more!"); return; }
-  grid.innerHTML = items.map(a=>`<div class="asset-mini" style="text-align:left;">
-    <button class="rm" data-del-asset="${a.id}">✕</button>
-    <span class="ic">${ASSET_ICON[a.category]||"📎"}</span>
-    <div style="font-family:var(--font-nav);font-weight:600;font-size:12px;">${escapeHTML(a.name)}</div>
-    <div>${(a.tags||[]).map(t=>`<span class="asset-tag">#${escapeHTML(t)}</span>`).join("")}</div>
-  </div>`).join("");
-}
-document.getElementById("assetSearch").addEventListener("input",(e)=>{ assetSearch=e.target.value; renderAssets(); });
-document.addEventListener("click",(e)=>{
-  const del = e.target.closest("[data-del-asset]");
-  if(del){ DB.assets = DB.assets.filter(a=>a.id!==del.dataset.delAsset); persist(); renderAssets(); }
-});
-document.getElementById("assetUploadBtn").addEventListener("click", ()=>{
-  const overlay = openModal(`
-    <h3>＋ Add Asset</h3>
-    <div class="field"><label>Name</label><input type="text" id="asName" placeholder="e.g. warm grain overlay"></div>
-    <div class="field"><label>Category</label>
-      <select class="field-input" id="asCat">${ASSET_CATS.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
-    </div>
-    <div class="field"><label>Tags (comma separated)</label><input type="text" id="asTags" placeholder="warm, grain, vintage"></div>
-    <div class="field"><label>Or attach a file</label>
-      <div class="asset-drop" id="asDrop">click to choose a file</div>
-      <input type="file" id="asFile" style="display:none;">
-      <div id="asFileName" style="font-size:11.5px;color:var(--ink-faint);margin-top:4px;"></div>
-    </div>
-    <button class="btn btn-primary" id="asSave">Add to library</button>
-  `);
-  overlay.querySelector("#asDrop").addEventListener("click", ()=> overlay.querySelector("#asFile").click());
-  overlay.querySelector("#asFile").addEventListener("change", (e)=>{
-    if(e.target.files[0]){
-      overlay.querySelector("#asFileName").textContent = "📎 "+e.target.files[0].name;
-      if(!overlay.querySelector("#asName").value) overlay.querySelector("#asName").value = e.target.files[0].name;
-    }
-  });
-  overlay.querySelector("#asSave").addEventListener("click", ()=>{
-    const name = overlay.querySelector("#asName").value.trim();
-    if(!name){ toast("give your asset a name ♡"); return; }
-    const tags = overlay.querySelector("#asTags").value.split(",").map(t=>t.trim()).filter(Boolean);
-    DB.assets.push({id:uid(), name, category: overlay.querySelector("#asCat").value, tags, dateAdded: todayISO()});
-    persist(); closeModal(overlay); toast("added to library 🗂"); renderAssets();
-  });
-});
 
 /* ============================================================
    ANALYTICS
