@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Con.garden ♡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Press+Start+2P&family=Josefin+Sans:wght@400;500;600;700&family=Imprima&family=Bellota:wght@400;700&family=Caveat:wght@500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ivory:#FBF7EF;
+  --paper:#FFFDF8;
+  --blush:#F6D9DA;
+  --dusty-rose:#D99FA0;
+  --lavender:#E4DDF2;
+  --butter:#F3E2A6;
+  --sage:#C6D9C0;
+  --sage-deep:#9DB897;
+  --ink:#4A3B34;
+  --ink-soft:#8A7A70;
+  --ink-faint:#B8AA9E;
+  --line:#E8DFD2;
+  --white:#ffffff;
+  --shadow: 0 2px 0 rgba(74,59,52,0.06), 0 8px 20px -10px rgba(74,59,52,0.18);
+  --radius: 18px;
+  --radius-sm: 10px;
+
+  --font-display:'Instrument Serif', serif;
+  --font-pixel:'Press Start 2P', monospace;
+  --font-nav:'Josefin Sans', sans-serif;
+  --font-body:'Imprima', sans-serif;
+  --font-hand:'Bellota', cursive;
+  --font-script:'Caveat', cursive;
+  --font-mono:'Space Mono', monospace;
+}
+
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  background:var(--ivory);
+  color:var(--ink);
+  font-family:var(--font-body);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(74,59,52,0.035) 1px, transparent 0);
+  background-size: 22px 22px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+::selection{background:var(--butter);}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;border:2px solid var(--ivory);}
+::-webkit-scrollbar-track{background:transparent;}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:400;margin:0;color:var(--ink);}
+.pixel{font-family:var(--font-pixel);}
+.hand{font-family:var(--font-hand);}
+.script{font-family:var(--font-script);}
+
+:focus-visible{outline:2px solid var(--sage-deep);outline-offset:2px;border-radius:6px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+/* ============ LAYOUT ============ */
+.app{
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  min-height:100vh;
+}
+
+/* ---- Sidebar ---- */
+.sidebar{
+  background:var(--paper);
+  border-right:1.5px dashed var(--line);
+  padding:26px 18px 18px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  z-index:5;
+}
+.brand{
+  padding:0 6px 18px;
+  border-bottom:1px dashed var(--line);
+  margin-bottom:14px;
+  position:relative;
+}
+.brand-mark{
+  display:flex;align-items:center;gap:8px;
+}
+.brand-mark .leaf{font-size:20px;}
+.brand h1{font-size:28px;letter-spacing:0.3px;}
+.brand .dot{color:var(--dusty-rose);}
+.brand-sub{
+  font-family:var(--font-script);
+  font-size:15px;
+  color:var(--ink-soft);
+  margin-top:2px;
+  padding-left:2px;
+}
+.tape{
+  position:absolute; top:-10px; right:14px;
+  width:46px;height:18px;
+  background:repeating-linear-gradient(45deg, rgba(199,217,192,0.9), rgba(199,217,192,0.9) 6px, rgba(214,230,208,0.9) 6px, rgba(214,230,208,0.9) 12px);
+  opacity:0.85; transform:rotate(-6deg);
+  box-shadow:0 1px 2px rgba(0,0,0,0.08);
+}
+
+.nav-group{margin-bottom:6px;}
+.nav-label{
+  font-family:var(--font-pixel);
+  font-size:9px;
+  color:var(--ink-faint);
+  letter-spacing:0.5px;
+  padding:14px 10px 8px;
+}
+.nav-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;
+  border-radius:12px;
+  font-family:var(--font-nav);
+  font-size:14.5px;
+  font-weight:500;
+  color:var(--ink-soft);
+  border:1px solid transparent;
+  transition:background .15s ease, color .15s ease, transform .1s ease;
+}
+.nav-item .ic{font-size:16px;width:18px;text-align:center;}
+.nav-item:hover{background:var(--ivory);color:var(--ink);}
+.nav-item.active{
+  background:var(--sage);
+  color:var(--ink);
+  border-color:rgba(74,59,52,0.06);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+}
+.nav-item.active .ic{transform:scale(1.05);}
+
+.quick-actions{margin-top:16px;display:flex;flex-direction:column;gap:6px;}
+.qa-btn{
+  font-family:var(--font-nav);font-size:13.5px;font-weight:600;
+  padding:9px 12px;border-radius:12px;border:1.5px dashed var(--line);
+  background:var(--ivory);color:var(--ink);text-align:left;
+  display:flex;align-items:center;gap:8px;
+  transition:transform .12s ease, background .15s ease, border-color .15s ease;
+}
+.qa-btn:hover{background:var(--white);border-color:var(--sage-deep);transform:translateX(2px);}
+.qa-btn.primary{background:var(--blush);border-style:solid;border-color:transparent;}
+.qa-btn.primary:hover{background:var(--dusty-rose);color:var(--white);}
+
+.sidebar-spacer{flex:1;}
+
+.mood-strip{
+  margin:14px 2px 12px;
+  background:var(--butter);
+  border-radius:10px;
+  padding:10px 12px 12px;
+  transform:rotate(-1deg);
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.mood-strip::before{
+  content:"";position:absolute;top:-8px;left:16px;width:34px;height:14px;
+  background:rgba(255,255,255,0.55);
+  box-shadow:0 1px 2px rgba(0,0,0,0.08);
+  transform:rotate(3deg);
+}
+.mood-strip .lbl{font-family:var(--font-pixel);font-size:8px;color:var(--ink-soft);}
+.mood-strip .msg{font-family:var(--font-script);font-size:16px;line-height:1.25;margin-top:4px;color:var(--ink);}
+
+.profile-card{
+  display:flex;align-items:center;gap:10px;
+  padding:10px;border-radius:14px;
+  background:var(--ivory);border:1px solid var(--line);
+}
+.avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg, var(--blush), var(--lavender));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:16px;color:var(--ink);
+  border:1.5px solid var(--white);box-shadow:0 0 0 1px var(--line);
+}
+.profile-card .who{font-family:var(--font-nav);font-size:13.5px;font-weight:600;}
+.profile-card .sub{font-size:11px;color:var(--ink-faint);}
+
+.handles-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;padding:0 2px;}
+.handle-chip{
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+  padding:5px 9px;border-radius:20px;background:var(--ivory);border:1px solid var(--line);
+  color:var(--ink-soft);transition:background .15s ease, color .15s ease, transform .12s ease;
+  display:inline-flex;align-items:center;gap:5px;
+}
+.handle-chip svg{flex:none;}
+.handle-chip:hover{background:var(--sage);color:var(--ink);transform:translateY(-1px);}
+
+/* ---- Main ---- */
+.main{padding:28px 34px 80px;max-width:1180px;}
+.view{display:none;animation:fadein .25s ease;}
+.view.active{display:block;}
+@keyframes fadein{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+.page-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;flex-wrap:wrap;gap:12px;}
+.page-header h2{font-size:34px;}
+.page-eyebrow{font-family:var(--font-pixel);font-size:9px;color:var(--sage-deep);letter-spacing:1px;margin-bottom:6px;display:block;}
+.page-sub{font-family:var(--font-script);font-size:17px;color:var(--ink-soft);margin-top:4px;}
+
+.btn{
+  font-family:var(--font-nav);font-weight:600;font-size:13.5px;
+  padding:10px 16px;border-radius:24px;border:1.5px solid transparent;
+  display:inline-flex;align-items:center;gap:6px;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:var(--dusty-rose);color:var(--white);box-shadow:var(--shadow);}
+.btn-primary:hover{background:#c98d8e;}
+.btn-soft{background:var(--sage);color:var(--ink);}
+.btn-soft:hover{background:var(--sage-deep);color:var(--white);}
+.btn-outline{background:transparent;border-color:var(--line);color:var(--ink-soft);}
+.btn-outline:hover{border-color:var(--ink-soft);color:var(--ink);}
+.btn-ghost{background:transparent;color:var(--ink-soft);padding:8px 10px;}
+.btn-ghost:hover{color:var(--ink);}
+.btn-sm{padding:6px 12px;font-size:12px;}
+.btn-danger{background:transparent;color:#b1615f;}
+.btn-danger:hover{background:#f7e6e5;}
+
+/* ---- stat cards ---- */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;}
+.stat-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 16px 14px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.stat-card::after{content:"";position:absolute;right:-18px;top:-18px;width:60px;height:60px;border-radius:50%;opacity:0.5;}
+.stat-card.c1::after{background:var(--sage);}
+.stat-card.c2::after{background:var(--butter);}
+.stat-card.c3::after{background:var(--lavender);}
+.stat-card.c4::after{background:var(--blush);}
+.stat-num{font-family:var(--font-display);font-size:38px;line-height:1;position:relative;}
+.stat-lbl{font-family:var(--font-nav);font-size:12.5px;color:var(--ink-soft);margin-top:6px;position:relative;}
+.stat-emoji{font-size:17px;margin-right:4px;}
+
+/* ---- two col dashboard ---- */
+.dash-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start;}
+@media (max-width:980px){.dash-grid{grid-template-columns:1fr;}}
+
+.panel{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 18px 16px;box-shadow:var(--shadow);
+}
+.panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.panel-head h3{font-size:21px;}
+.panel-head .see-all{font-family:var(--font-nav);font-size:12.5px;color:var(--sage-deep);font-weight:600;}
+
+/* ---- idea/content cards ---- */
+.card-list{display:flex;flex-direction:column;gap:10px;}
+.idea-card{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--ivory);border:1px solid var(--line);border-radius:14px;
+  padding:12px;position:relative;transition:transform .12s ease, box-shadow .12s ease;
+  cursor:pointer;
+}
+.idea-card:hover{transform:translateY(-2px) rotate(-0.2deg);box-shadow:var(--shadow);}
+.idea-thumb{
+  width:52px;height:52px;border-radius:11px;flex:none;
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  border:1px solid rgba(74,59,52,0.08);
+}
+.idea-body{flex:1;min-width:0;}
+.idea-title{font-family:var(--font-nav);font-weight:600;font-size:14.5px;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.idea-meta{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap;}
+.chip{
+  font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:20px;
+  background:var(--white);border:1px solid var(--line);color:var(--ink-soft);
+}
+.chip.status{border:none;color:var(--ink);font-weight:700;}
+.st-seed{background:var(--sage);}
+.st-planning{background:var(--butter);}
+.st-filming,.st-editing{background:var(--dusty-rose);color:var(--white);}
+.st-ready{background:var(--lavender);}
+.st-posted{background:var(--blush);}
+.idea-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.fav-btn{background:none;border:none;font-size:16px;color:var(--ink-faint);padding:2px;}
+.fav-btn.active{color:var(--dusty-rose);}
+.sticker{position:absolute;top:-6px;left:10px;font-size:13px;transform:rotate(-8deg);}
+
+/* ---- mini calendar (dashboard) ---- */
+.mini-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.mini-cal .dow{font-family:var(--font-pixel);font-size:7px;text-align:center;color:var(--ink-faint);padding-bottom:4px;}
+.mini-cal .day{
+  aspect-ratio:1;border-radius:9px;border:1px solid var(--line);background:var(--ivory);
+  font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);
+  padding:4px;display:flex;flex-direction:column;gap:2px;overflow:hidden;cursor:pointer;
+}
+.mini-cal .day.today{border-color:var(--dusty-rose);border-width:1.5px;background:var(--white);}
+.mini-cal .day.empty{background:transparent;border-color:transparent;}
+.mini-cal .evt{font-size:7.5px;padding:1px 3px;border-radius:5px;background:var(--sage);color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-nav);}
+
+/* ---- Filter bar ---- */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center;}
+.filter-pill{
+  font-family:var(--font-nav);font-size:12.5px;font-weight:600;
+  padding:6px 13px;border-radius:20px;border:1.5px solid var(--line);
+  background:var(--paper);color:var(--ink-soft);
+}
+.filter-pill.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.filter-sep{width:1px;height:18px;background:var(--line);margin:0 2px;}
+.search-box{
+  display:flex;align-items:center;gap:6px;background:var(--paper);border:1.5px solid var(--line);
+  border-radius:20px;padding:6px 12px;min-width:180px;
+}
+.search-box input{border:none;background:none;outline:none;font-family:var(--font-body);font-size:13px;width:100%;color:var(--ink);}
+.select-mini{
+  font-family:var(--font-nav);font-size:12.5px;font-weight:600;color:var(--ink-soft);
+  background:var(--paper);border:1.5px solid var(--line);border-radius:20px;padding:6px 10px;
+}
+
+/* ---- grid of idea cards (garden) ---- */
+.garden-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.garden-card{
+  background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;
+  box-shadow:var(--shadow);position:relative;display:flex;flex-direction:column;gap:8px;cursor:pointer;
+  transition:transform .12s ease;
+}
+.garden-card:hover{transform:translateY(-3px);}
+.gc-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.gc-thumb{width:100%;height:86px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px solid rgba(74,59,52,0.08);}
+.gc-title{font-family:var(--font-nav);font-weight:700;font-size:15px;margin-top:2px;}
+.gc-desc{font-size:12.5px;color:var(--ink-soft);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.gc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;}
+.gc-date{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+.stars{color:var(--butter-deep,#c9a53a);font-size:12px;letter-spacing:1px;}
+
+/* ---- series ---- */
+.series-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.series-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow);}
+.series-cover{height:64px;border-radius:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.series-name{font-size:22px;}
+.series-desc{font-size:12.5px;color:var(--ink-soft);margin:4px 0 10px;}
+.progress-track{height:7px;background:var(--ivory);border-radius:6px;overflow:hidden;border:1px solid var(--line);}
+.progress-fill{height:100%;background:var(--sage-deep);border-radius:6px;transition:width .3s ease;}
+.series-meta-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:6px;}
+.ep-list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:4px;max-height:170px;overflow:auto;}
+.ep-item{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 8px;border-radius:9px;background:var(--ivory);cursor:grab;}
+.ep-item.dragging{opacity:0.4;}
+.ep-num{font-family:var(--font-pixel);font-size:8px;color:var(--ink-faint);width:20px;}
+.ep-title{flex:1;}
+.ep-status{font-size:13px;}
+.ep-item button{background:none;border:none;color:var(--ink-faint);font-size:12px;}
+
+/* ---- calendar full ---- */
+.cal-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.cal-nav{display:flex;align-items:center;gap:10px;}
+.cal-nav button{background:var(--paper);border:1.5px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:14px;}
+.cal-title{font-size:22px;min-width:170px;text-align:center;}
+.view-toggle{display:flex;gap:4px;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;padding:3px;}
+.view-toggle button{border:none;background:none;font-family:var(--font-nav);font-size:12px;font-weight:600;padding:6px 12px;border-radius:16px;color:var(--ink-soft);}
+.view-toggle button.active{background:var(--ink);color:var(--white);}
+.calendar-full{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.calendar-full .dow{font-family:var(--font-pixel);font-size:8px;color:var(--ink-faint);text-align:center;padding-bottom:6px;}
+.cal-cell{
+  min-height:100px;background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:6px;display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:background .12s;
+}
+.cal-cell:hover{background:var(--ivory);}
+.cal-cell.empty{background:transparent;border-color:transparent;cursor:default;}
+.cal-cell.today{border-color:var(--dusty-rose);border-width:1.5px;}
+.cal-cell .num{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);}
+.cal-cell .num.today-num{color:var(--dusty-rose);font-weight:700;}
+.cal-evt{font-size:10px;padding:2px 6px;border-radius:6px;background:var(--sage);font-family:var(--font-nav);font-weight:600;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:grab;}
+.cal-evt[draggable="true"]:active{cursor:grabbing;}
+.cal-list-view{display:flex;flex-direction:column;gap:8px;}
+.cal-list-day{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line);}
+.cal-list-date{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);width:80px;flex:none;padding-top:4px;}
+.cal-list-events{flex:1;display:flex;flex-direction:column;gap:6px;}
+
+/* ---- Content Box ---- */
+.cb-layout{display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start;}
+@media (max-width:900px){.cb-layout{grid-template-columns:1fr;}}
+.cb-list{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:10px;box-shadow:var(--shadow);
+  max-height:76vh;overflow:auto;display:flex;flex-direction:column;gap:6px;}
+.cb-list-item{padding:9px 10px;border-radius:12px;cursor:pointer;border:1px solid transparent;}
+.cb-list-item:hover{background:var(--ivory);}
+.cb-list-item.active{background:var(--sage);border-color:rgba(74,59,52,0.08);}
+.cb-list-item .t{font-family:var(--font-nav);font-weight:600;font-size:13px;}
+.cb-list-item .s{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-soft);margin-top:2px;}
+
+.cb-detail{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);}
+.cb-empty{padding:60px 20px;text-align:center;color:var(--ink-faint);}
+.cb-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;}
+.cb-thumb-big{width:76px;height:76px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px;flex:none;}
+.cb-head-info{flex:1;min-width:200px;}
+.cb-title-input{font-family:var(--font-display);font-size:26px;border:none;background:none;width:100%;color:var(--ink);}
+.cb-title-input:focus{outline:none;border-bottom:1.5px dashed var(--sage-deep);}
+.cb-sub-row{display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;align-items:center;}
+.status-stepper{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px;}
+.status-step{
+  font-family:var(--font-nav);font-size:11px;font-weight:600;padding:6px 11px;border-radius:20px;
+  background:var(--ivory);border:1.5px solid var(--line);color:var(--ink-faint);
+}
+.status-step.done{background:var(--sage);color:var(--ink);border-color:transparent;}
+.status-step.current{background:var(--dusty-rose);color:var(--white);border-color:transparent;}
+
+.tabs{display:flex;gap:4px;border-bottom:1.5px dashed var(--line);margin:18px 0 16px;flex-wrap:wrap;}
+.tab-btn{font-family:var(--font-nav);font-weight:600;font-size:13px;padding:8px 14px;color:var(--ink-soft);border-bottom:2.5px solid transparent;margin-bottom:-1.5px;}
+.tab-btn.active{color:var(--ink);border-color:var(--dusty-rose);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;animation:fadein .2s ease;}
+
+.field{margin-bottom:14px;}
+.field label{font-family:var(--font-pixel);font-size:9px;color:var(--sage-deep);letter-spacing:0.5px;display:block;margin-bottom:6px;}
+.field textarea, .field input[type=text], .field input[type=date], select.field-input{
+  width:100%;font-family:var(--font-body);font-size:13.5px;color:var(--ink);
+  background:var(--ivory);border:1px solid var(--line);border-radius:12px;padding:10px 12px;resize:vertical;
+}
+.field textarea:focus, .field input:focus{outline:none;border-color:var(--sage-deep);background:var(--white);}
+.platform-checks{display:flex;gap:14px;flex-wrap:wrap;}
+.pcheck{display:flex;align-items:center;gap:6px;font-size:13px;font-family:var(--font-nav);font-weight:500;}
+
+.task-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line);}
+.task-row input[type=checkbox]{width:17px;height:17px;accent-color:var(--sage-deep);}
+.task-row.done .t{text-decoration:line-through;color:var(--ink-faint);}
+.task-row .t{flex:1;font-size:13.5px;}
+.task-progress-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.flower-progress{position:relative;width:38px;height:38px;flex:none;}
+.flower-progress svg{width:100%;height:100%;}
+
+.script-area{width:100%;min-height:320px;font-family:var(--font-hand);font-size:16px;line-height:1.7;
+  background: repeating-linear-gradient(var(--white) 0px, var(--white) 30px, #f1ece0 31px);
+  border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--ink);resize:vertical;}
+.script-area:focus{outline:none;}
+
+.notes-area{width:100%;min-height:220px;font-family:var(--font-script);font-size:18px;line-height:1.9;color:#3d5741;
+  background:
+    linear-gradient(var(--paper) 27px, #dbe4d6 28px) ;
+  background-size: 100% 28px;
+  border:1px solid var(--line);border-radius:14px;padding:14px 18px;resize:vertical;}
+.notes-area:focus{outline:none;}
+
+.asset-drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;color:var(--ink-faint);font-size:13px;margin-bottom:14px;cursor:pointer;}
+.asset-drop:hover{border-color:var(--sage-deep);color:var(--ink-soft);}
+.asset-mini-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;}
+.asset-mini{background:var(--ivory);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;font-size:11px;position:relative;}
+.asset-mini .rm{position:absolute;top:3px;right:5px;background:none;border:none;color:var(--ink-faint);font-size:12px;}
+.asset-mini .ic{font-size:22px;display:block;margin-bottom:4px;}
+
+/* ---- Quick dump ---- */
+.quickdump-card{background:var(--blush);border-radius:20px;padding:20px;box-shadow:var(--shadow);position:relative;margin-bottom:22px;}
+.quickdump-card::before{content:"♡ ♡ ♡";position:absolute;top:10px;right:16px;font-size:11px;color:rgba(74,59,52,0.35);letter-spacing:3px;}
+.quickdump-card textarea{
+  width:100%;min-height:70px;background:var(--white);border:1.5px dashed var(--dusty-rose);border-radius:14px;
+  padding:12px 14px;font-family:var(--font-hand);font-size:15px;color:var(--ink);resize:vertical;
+}
+.quickdump-card textarea:focus{outline:none;background:#fff;}
+.qd-foot{display:flex;justify-content:space-between;align-items:center;margin-top:10px;}
+.qd-count{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);}
+.qd-link{font-family:var(--font-nav);font-size:12px;font-weight:600;color:var(--ink);opacity:0.75;}
+.qd-link:hover{text-decoration:underline;}
+
+/* ---- Archive ---- */
+.archive-summary{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap;}
+.archive-stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 18px;font-family:var(--font-script);font-size:17px;box-shadow:var(--shadow);}
+.archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+.archive-card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:12px;box-shadow:var(--shadow);}
+.archive-thumb{height:70px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:8px;}
+.archive-title{font-family:var(--font-nav);font-weight:700;font-size:13.5px;}
+.archive-meta{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);margin-top:5px;}
+
+/* ---- Assets page ---- */
+.asset-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:22px;}
+.asset-cat-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:transform .12s;}
+.asset-cat-card:hover{transform:translateY(-2px);}
+.asset-cat-card .ic{font-size:24px;}
+.asset-cat-card .n{font-family:var(--font-nav);font-weight:700;font-size:13px;margin-top:6px;}
+.asset-cat-card .c{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);}
+.asset-cat-card.active{border-color:var(--sage-deep);background:var(--sage);}
+.asset-full-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.asset-tag{font-family:var(--font-mono);font-size:9px;background:var(--ivory);border:1px solid var(--line);border-radius:10px;padding:2px 6px;display:inline-block;margin:2px 2px 0 0;}
+
+/* ---- Analytics ---- */
+.an-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+@media (max-width:900px){.an-grid{grid-template-columns:1fr 1fr;}}
+.bar-chart{display:flex;align-items:flex-end;gap:10px;height:140px;padding-top:10px;}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;}
+.bar{width:100%;border-radius:8px 8px 3px 3px;background:var(--sage-deep);position:relative;min-height:4px;transition:height .4s ease;}
+.bar-lbl{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-soft);}
+.donut-wrap{display:flex;align-items:center;gap:16px;}
+.legend-row{display:flex;align-items:center;gap:6px;font-family:var(--font-nav);font-size:12px;margin-bottom:5px;}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex:none;}
+
+/* ---- Modal ---- */
+.overlay{position:fixed;inset:0;background:rgba(74,59,52,0.35);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadein .15s ease;}
+.modal{background:var(--paper);border-radius:22px;max-width:520px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,0.25);position:relative;}
+.modal.wide{max-width:720px;}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:18px;color:var(--ink-faint);}
+.modal h3{font-size:24px;margin-bottom:14px;}
+.confirm-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--ink-faint);}
+.empty-state .em{font-size:34px;display:block;margin-bottom:10px;}
+.empty-state .l1{font-family:var(--font-script);font-size:19px;color:var(--ink-soft);}
+.empty-state .l2{font-size:12.5px;margin-top:4px;}
+
+/* toast */
+#toast-root{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--ink);color:var(--white);font-family:var(--font-nav);font-size:13px;font-weight:500;
+  padding:10px 16px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.2);animation:toastin .25s ease;}
+@keyframes toastin{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* seed pop / bloom animations */
+@keyframes seedpop{0%{transform:scale(0.4);opacity:0;}60%{transform:scale(1.15);opacity:1;}100%{transform:scale(1);}}
+.seed-anim{animation:seedpop .45s cubic-bezier(.34,1.56,.64,1);}
+@keyframes bloompulse{0%{box-shadow:0 0 0 0 rgba(217,159,160,0.5);}70%{box-shadow:0 0 0 14px rgba(217,159,160,0);}100%{box-shadow:0 0 0 0 rgba(217,159,160,0);}}
+.bloom-anim{animation:bloompulse 0.9s ease;}
+
+/* ---- Mobile ---- */
+.mobile-topbar,.mobile-bottomnav{display:none;}
+@media (max-width:880px){
+  .app{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .sidebar.open{
+    display:flex;position:fixed;inset:0 20% 0 0;height:100vh;z-index:60;overflow:auto;
+    box-shadow:10px 0 30px rgba(0,0,0,0.2);
+  }
+  .mobile-topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;background:var(--paper);border-bottom:1.5px dashed var(--line);position:sticky;top:0;z-index:20;
+  }
+  .mobile-topbar h1{font-size:22px;}
+  .menu-btn{background:var(--ivory);border:1px solid var(--line);border-radius:10px;width:38px;height:38px;font-size:16px;}
+  .main{padding:16px 16px 90px;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
+  .dash-grid{grid-template-columns:1fr;}
+  .cb-layout{grid-template-columns:1fr;}
+  .mobile-bottomnav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--paper);
+    border-top:1.5px dashed var(--line);z-index:40;padding:6px 4px;justify-content:space-around;
+  }
+  .mobile-bottomnav .mb-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;color:var(--ink-soft);font-family:var(--font-nav);padding:6px 4px;flex:1;}
+  .mobile-bottomnav .mb-item .ic{font-size:18px;}
+  .mobile-bottomnav .mb-item.active{color:var(--dusty-rose);}
+  .overlay-scrim-close{display:block;}
+  .an-grid{grid-template-columns:1fr;}
+}
+@media (min-width:881px){.mobile-topbar,.mobile-bottomnav{display:none !important;}}
+</style>
+</head>
+<body>
+
+<div class="mobile-topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <h1>Con<span style="color:var(--dusty-rose)">.</span>garden</h1>
+  <button class="menu-btn" id="mobileQuickDump">✎</button>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="tape"></div>
+      <div class="brand-mark"><span class="leaf">🌱</span><h1>Con<span class="dot">.</span>garden</h1></div>
+      <div class="brand-sub">a little garden for your ideas ♡</div>
+    </div>
+
+    <div class="nav-group">
+      <ul class="nav-list" id="navList">
+        <li class="nav-item active" data-view="dashboard"><span class="ic">🌱</span>Dashboard</li>
+        <li class="nav-item" data-view="garden"><span class="ic">🌷</span>Idea Garden</li>
+        <li class="nav-item" data-view="series"><span class="ic">🌿</span>Series</li>
+        <li class="nav-item" data-view="calendar"><span class="ic">📅</span>Content Calendar</li>
+        <li class="nav-item" data-view="contentbox"><span class="ic">📝</span>Content Box</li>
+        <li class="nav-item" data-view="assets"><span class="ic">🗂</span>Assets</li>
+        <li class="nav-item" data-view="archive"><span class="ic">🌼</span>Archive</li>
+        <li class="nav-item" data-view="analytics"><span class="ic">📊</span>Analytics</li>
+      </ul>
+    </div>
+
+    <div class="nav-label">quick actions</div>
+    <div class="quick-actions">
+      <button class="qa-btn primary" id="qaDump">＋ Quick Dump</button>
+      <button class="qa-btn" id="qaNewContent">＋ New Content</button>
+      <button class="qa-btn" id="qaNewSeries">＋ New Series</button>
+    </div>
+
+    <div class="sidebar-spacer"></div>
+
+    <div class="mood-strip">
+      <div class="lbl">GARDEN MOOD</div>
+      <div class="msg" id="moodMsg">don't overthink, just create ♡</div>
+    </div>
+
+    <div class="profile-card">
+      <div class="avatar">A</div>
+      <div>
+        <div class="who">Ania</div>
+        <div class="sub">tending the garden 🌼</div>
+      </div>
+    </div>
+
+    <div class="handles-row">
+      <a class="handle-chip" href="https://instagram.com/pp.n0te" target="_blank" rel="noopener" aria-label="Instagram: pp.n0te">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.3"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+        pp.n0te
+      </a>
+      <a class="handle-chip" href="https://youtube.com/@pp.n0te" target="_blank" rel="noopener" aria-label="YouTube: pp.n0te">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5.5" width="20" height="13" rx="4"/><path d="M10.5 9.3l5 2.7-5 2.7z" fill="currentColor" stroke="none"/></svg>
+        pp.n0te
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ================= DASHBOARD ================= -->
+    <section class="view active" id="view-dashboard">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">✿ dashboard</span>
+          <h2>Welcome back, Ania ♡</h2>
+          <div class="page-sub">let's grow some ideas today.</div>
+        </div>
+      </div>
+
+      <div class="quickdump-card">
+        <div class="pixel" style="font-size:10px;letter-spacing:0.5px;margin-bottom:8px;">QUICK DUMP ♡</div>
+        <textarea id="dashQuickDump" placeholder="type your random content thought here..."></textarea>
+        <div class="qd-foot">
+          <span class="qd-count" id="dashQdCount">0 characters</span>
+          <div style="display:flex;gap:14px;align-items:center;">
+            <a class="qd-link" id="dashQdFull">or → turn into full content</a>
+            <button class="btn btn-primary btn-sm" id="dashQdSave">Plant this idea 🌱</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Idea Garden Preview</h3>
+            <a class="see-all" data-goto="garden">see all →</a>
+          </div>
+          <div class="card-list" id="dashIdeaPreview"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3 style="font-size:20px;">Content Calendar</h3>
+            <a class="see-all" data-goto="calendar">see all →</a>
+          </div>
+          <div id="dashMiniCal"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= IDEA GARDEN ================= -->
+    <section class="view" id="view-garden">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">🌷 idea garden</span>
+          <h2>Idea Garden</h2>
+          <div class="page-sub">every idea is a little seed ✿</div>
+        </div>
+        <button class="btn btn-primary" id="plantIdeaBtn">＋ Plant an Idea</button>
+      </div>
+
+      <div class="filter-bar" id="gardenStatusFilters">
+        <button class="filter-pill active" data-status="all">All</button>
+        <button class="filter-pill" data-status="seed">Seeds</button>
+        <button class="filter-pill" data-status="growing">Growing</button>
+        <button class="filter-pill" data-status="ready">Ready</button>
+        <button class="filter-pill" data-status="posted">Bloomed</button>
+        <div class="filter-sep"></div>
+        <select class="select-mini" id="gardenTypeFilter">
+          <option value="all">All types</option>
+          <option value="series">Series</option>
+          <option value="standalone">Standalone</option>
+        </select>
+        <select class="select-mini" id="gardenCatFilter">
+          <option value="all">All categories</option>
+          <option value="Editing">Editing</option>
+          <option value="Design">Design</option>
+          <option value="Study">Study</option>
+          <option value="Personal">Personal</option>
+          <option value="Music">Music</option>
+          <option value="Other">Other</option>
+        </select>
+        <select class="select-mini" id="gardenSort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="priority">Priority</option>
+          <option value="status">Status</option>
+          <option value="scheduled">Scheduled date</option>
+        </select>
+        <div class="search-box" style="margin-left:auto;">
+          <span>🔍</span><input type="text" id="gardenSearch" placeholder="search ideas...">
+        </div>
+      </div>
+
+      <div class="garden-grid" id="gardenGrid"></div>
+    </section>
+
+    <!-- ================= SERIES ================= -->
+    <section class="view" id="view-series">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">🌿 series</span>
+          <h2>Series</h2>
+          <div class="page-sub">little rows planted in order 🌱</div>
+        </div>
+        <button class="btn btn-primary" id="newSeriesBtn2">＋ New Series</button>
+      </div>
+      <div class="series-grid" id="seriesGrid"></div>
+    </section>
+
+    <!-- ================= CALENDAR ================= -->
+    <section class="view" id="view-calendar">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">📅 calendar</span>
+          <h2>Content Calendar</h2>
+        </div>
+      </div>
+      <div class="cal-toolbar">
+        <div class="cal-nav">
+          <button id="calPrev">←</button>
+          <div class="cal-title" id="calTitle"></div>
+          <button id="calNext">→</button>
+        </div>
+        <div class="view-toggle" id="calViewToggle">
+          <button class="active" data-calview="month">Month</button>
+          <button data-calview="week">Week</button>
+          <button data-calview="list">List</button>
+        </div>
+      </div>
+      <div id="calBody"></div>
+    </section>
+
+    <!-- ================= CONTENT BOX ================= -->
+    <section class="view" id="view-contentbox">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">📝 content box</span>
+          <h2>Content Box</h2>
+          <div class="page-sub">your one-piece-at-a-time workspace</div>
+        </div>
+        <button class="btn btn-primary" id="cbNewBtn">＋ New Content</button>
+      </div>
+      <div class="cb-layout">
+        <div class="cb-list" id="cbList"></div>
+        <div class="cb-detail" id="cbDetail"></div>
+      </div>
+    </section>
+
+    <!-- ================= ARCHIVE ================= -->
+    <section class="view" id="view-archive">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">🌼 archive</span>
+          <h2>Archive</h2>
+          <div class="page-sub">flowers that fully bloomed 🌼</div>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <select class="select-mini" id="archYear"></select>
+        <select class="select-mini" id="archMonth">
+          <option value="all">All months</option>
+        </select>
+        <select class="select-mini" id="archPlatform">
+          <option value="all">All platforms</option>
+          <option value="Instagram">Instagram</option>
+          <option value="YouTube">YouTube</option>
+          <option value="TikTok">TikTok</option>
+        </select>
+        <select class="select-mini" id="archSeries"><option value="all">All series</option></select>
+      </div>
+      <div class="archive-summary" id="archiveSummary"></div>
+      <div class="archive-grid" id="archiveGrid"></div>
+    </section>
+
+    <!-- ================= ASSETS ================= -->
+    <section class="view" id="view-assets">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">🗂 assets</span>
+          <h2>Assets</h2>
+          <div class="page-sub">reusable bits and pieces for the garden</div>
+        </div>
+        <button class="btn btn-primary" id="assetUploadBtn">＋ Add Asset</button>
+      </div>
+      <div class="asset-cat-grid" id="assetCatGrid"></div>
+      <div class="filter-bar">
+        <div class="search-box"><span>🔍</span><input type="text" id="assetSearch" placeholder="search assets or tags..."></div>
+      </div>
+      <div class="asset-full-grid" id="assetGrid"></div>
+    </section>
+
+    <!-- ================= ANALYTICS ================= -->
+    <section class="view" id="view-analytics">
+      <div class="page-header">
+        <div>
+          <span class="page-eyebrow">📊 analytics</span>
+          <h2>Analytics</h2>
+          <div class="page-sub">a soft look at how the garden's growing</div>
+        </div>
+      </div>
+      <div class="an-grid" id="anStatGrid"></div>
+      <div class="dash-grid">
+        <div class="panel">
+          <div class="panel-head"><h3 style="font-size:19px;">Posting frequency (last 8 weeks)</h3></div>
+          <div class="bar-chart" id="anFreqChart"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3 style="font-size:19px;">By category</h3></div>
+          <div id="anCatChart"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<div class="mobile-bottomnav" id="mobileBottomNav">
+  <div class="mb-item active" data-view="dashboard"><span class="ic">🌱</span>Home</div>
+  <div class="mb-item" data-view="garden"><span class="ic">🌷</span>Garden</div>
+  <div class="mb-item" data-view="calendar"><span class="ic">📅</span>Calendar</div>
+  <div class="mb-item" data-view="contentbox"><span class="ic">📝</span>Box</div>
+  <div class="mb-item" data-view="archive"><span class="ic">🌼</span>Archive</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   DATA LAYER
+============================================================ */
+const DB_KEY = "congarden_db_v1";
+const STATUSES = ["seed","planning","filming","editing","ready","posted"];
+const STATUS_LABEL = {seed:"Seed", planning:"Planning", filming:"Filming", editing:"Editing", ready:"Ready", posted:"Posted"};
+const STATUS_EMOJI = {seed:"🌱", planning:"🌿", filming:"🌿", editing:"🌿", ready:"🌷", posted:"🌼"};
+const CATEGORIES = ["Editing","Design","Study","Personal","Music","Other"];
+const CATEGORY_EMOJI = {Editing:"🎬", Design:"🎨", Study:"📚", Personal:"🌼", Music:"🎧", Other:"✿"};
+const ASSET_CATS = ["Backgrounds","Fonts","Stickers","Textures","Music","Sound Effects","Overlays","References","Templates"];
+const ASSET_ICON = {Backgrounds:"🖼",Fonts:"🔤",Stickers:"⭐",Textures:"🧵",Music:"🎵",
+  "Sound Effects":"🔊",Overlays:"🪄",References:"📎",Templates:"🗂"};
+const MOODS = [
+  "don't overthink, just create ♡",
+  "one idea at a time.",
+  "your silly little ideas deserve a place to grow.",
+  "not every seed needs to bloom today.",
+  "small steps still count as growing 🌱",
+  "you're allowed to just play today."
+];
+const TAPE_STICKERS = ["✧","♡","☆","✿","•"];
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function todayISO(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function fmtDate(iso){
+  if(!iso) return "no date";
+  const d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
+}
+function fmtShort(iso){
+  const d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+
+function seedData(){
+  const s1 = uid(), s2 = uid();
+  const series = [
+    {id:s1, name:"Editing Recipes", description:"Short tutorials on my editing workflow, one technique at a time.",
+      color:"var(--dusty-rose)", icon:"🎬",
+      episodes:[
+        {id:uid(), title:"My Editing Structure", status:"done"},
+        {id:uid(), title:"Backgrounds", status:"current"},
+        {id:uid(), title:"Fonts & Text", status:"todo"},
+        {id:uid(), title:"Sound Effects", status:"todo"},
+        {id:uid(), title:"Stickers", status:"todo"},
+        {id:uid(), title:"Transitions", status:"todo"},
+        {id:uid(), title:"Choosing Clips", status:"todo"},
+        {id:uid(), title:"Export Settings", status:"todo"},
+      ]},
+    {id:s2, name:"Study Hacks", description:"Tiny study methods that actually stuck.", color:"var(--lavender)", icon:"📚",
+      episodes:[
+        {id:uid(), title:"Short notes methods that actually work", status:"current"},
+        {id:uid(), title:"Pomodoro but cozy", status:"todo"},
+      ]},
+  ];
+  const items = [
+    {id:uid(), title:"17 printable designs you can make", description:"Round up of cute printable ideas for the shop.",
+      category:"Design", status:"seed", favorite:true, priority:2, series:null,
+      dateAdded: daysAgo(2), scheduledDate:null, platforms:["Instagram"], hook:"", caption:"", longDescription:"",
+      tasks: defaultTasks(), script:"", notes:"", assets:[]},
+    {id:uid(), title:"Editing Recipes #02: Backgrounds", description:"How I build layered backgrounds fast.",
+      category:"Editing", status:"planning", favorite:false, priority:3, series:s1,
+      dateAdded: daysAgo(5), scheduledDate: inDays(3), platforms:["YouTube","TikTok"], hook:"okay but this background trick changed everything",
+      caption:"episode 02 of editing recipes 🎬", longDescription:"", tasks: defaultTasks(), script:"", notes:"", assets:[]},
+    {id:uid(), title:"Short notes methods that actually work", description:"3 note-taking systems I actually kept using.",
+      category:"Study", status:"filming", favorite:true, priority:2, series:s2,
+      dateAdded: daysAgo(9), scheduledDate: inDays(1), platforms:["Instagram","YouTube"], hook:"", caption:"", longDescription:"",
+      tasks: defaultTasks(true), script:"", notes:"", assets:[]},
+    {id:uid(), title:"Music finds — cozy autumn playlist", description:"Songs on repeat this month.",
+      category:"Music", status:"ready", favorite:false, priority:1, series:null,
+      dateAdded: daysAgo(12), scheduledDate: inDays(0), platforms:["Instagram"], hook:"", caption:"", longDescription:"",
+      tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
+    {id:uid(), title:"Design inspo — soft scrapbook layouts", description:"Layout ideas gathered this week.",
+      category:"Design", status:"posted", favorite:false, priority:1, series:null,
+      dateAdded: daysAgo(20), scheduledDate: daysAgo(3), postedDate: daysAgo(3), platforms:["Instagram"], hook:"", caption:"", longDescription:"",
+      tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
+    {id:uid(), title:"Plan with me — weekly reset", description:"", category:"Personal", status:"posted",
+      favorite:false, priority:1, series:null, dateAdded: daysAgo(30), scheduledDate: daysAgo(15), postedDate: daysAgo(15),
+      platforms:["YouTube"], hook:"", caption:"", longDescription:"", tasks: defaultTasks(true,true), script:"", notes:"", assets:[]},
+  ];
+  const assets = [
+    {id:uid(), name:"warm film grain overlay", category:"Overlays", tags:["grain","warm"], note:"", dateAdded: daysAgo(14)},
+    {id:uid(), name:"bellota + imprima pairing.png", category:"Fonts", tags:["pairing"], note:"", dateAdded: daysAgo(20)},
+    {id:uid(), name:"soft piano loop 01", category:"Music", tags:["calm","piano"], note:"", dateAdded: daysAgo(6)},
+  ];
+  return {items, series, assets};
+}
+function defaultTasks(a,b){
+  const base = ["Collect references","Record screen","Edit video","Add text","Add sound effects","Create thumbnail","Write caption","Schedule post"];
+  return base.map((t,i)=>({id:uid(), text:t, done: a ? i<4 : (b ? true : false)}));
+}
+function daysAgo(n){ const d=new Date(); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10); }
+function inDays(n){ const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+
+let DB = load();
+function load(){
+  try{
+    const raw = localStorage.getItem(DB_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  const fresh = seedData();
+  save(fresh);
+  return fresh;
+}
+function save(db){
+  db = db || DB;
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+function persist(){ save(DB); }
+
+/* ============================================================
+   TOASTS + CONFIRM + MODAL HELPERS
+============================================================ */
+function toast(msg){
+  const root = document.getElementById("toast-root");
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.textContent = msg;
+  root.appendChild(el);
+  setTimeout(()=>{ el.style.transition="opacity .3s ease"; el.style.opacity="0"; setTimeout(()=>el.remove(),300); }, 2200);
+}
+
+function openModal(innerHTML, opts){
+  opts = opts || {};
+  const root = document.getElementById("modal-root");
+  const overlay = document.createElement("div");
+  overlay.className = "overlay";
+  overlay.innerHTML = `<div class="modal ${opts.wide?'wide':''}">
+      <button class="modal-close" aria-label="Close">✕</button>
+      ${innerHTML}
+    </div>`;
+  root.appendChild(overlay);
+  overlay.addEventListener("click", (e)=>{ if(e.target===overlay) closeModal(overlay); });
+  overlay.querySelector(".modal-close").addEventListener("click", ()=>closeModal(overlay));
+  document.addEventListener("keydown", escHandler);
+  function escHandler(e){ if(e.key==="Escape"){ closeModal(overlay); } }
+  overlay._escHandler = escHandler;
+  return overlay;
+}
+function closeModal(overlay){
+  document.removeEventListener("keydown", overlay._escHandler);
+  overlay.remove();
+}
+function confirmDialog(message, onYes){
+  const overlay = openModal(`
+    <h3>Are you sure?</h3>
+    <p style="font-size:14px;color:var(--ink-soft);">${message}</p>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" id="confirmNo">Cancel</button>
+      <button class="btn btn-danger" id="confirmYes" style="background:var(--dusty-rose);color:#fff;">Delete</button>
+    </div>
+  `);
+  overlay.querySelector("#confirmNo").addEventListener("click", ()=>closeModal(overlay));
+  overlay.querySelector("#confirmYes").addEventListener("click", ()=>{ onYes(); closeModal(overlay); });
+}
+
+/* ============================================================
+   NAVIGATION / ROUTER
+============================================================ */
+let currentView = "dashboard";
+function goto(view){
+  currentView = view;
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById("view-"+view).classList.add("active");
+  document.querySelectorAll(".nav-item").forEach(n=> n.classList.toggle("active", n.dataset.view===view));
+  document.querySelectorAll(".mb-item").forEach(n=> n.classList.toggle("active", n.dataset.view===view));
+  document.getElementById("sidebar").classList.remove("open");
+  renderView(view);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderView(view){
+  if(view==="dashboard") renderDashboard();
+  else if(view==="garden") renderGarden();
+  else if(view==="series") renderSeries();
+  else if(view==="calendar") renderCalendar();
+  else if(view==="contentbox") renderContentBox();
+  else if(view==="archive") renderArchive();
+  else if(view==="assets") renderAssets();
+  else if(view==="analytics") renderAnalytics();
+}
+
+document.querySelectorAll(".nav-item, .mb-item").forEach(el=>{
+  el.addEventListener("click", ()=> goto(el.dataset.view));
+});
+document.addEventListener("click", (e)=>{
+  const g = e.target.closest("[data-goto]");
+  if(g) goto(g.dataset.goto);
+});
+document.getElementById("menuBtn").addEventListener("click", ()=>{
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* ============================================================
+   SMALL RENDER HELPERS
+============================================================ */
+function statusChipClass(st){ return "chip status st-"+st; }
+function bucketOf(status){
+  if(status==="seed") return "seed";
+  if(status==="planning"||status==="filming"||status==="editing") return "growing";
+  if(status==="ready") return "ready";
+  if(status==="posted") return "posted";
+  return "seed";
+}
+function starRow(n){ return "★".repeat(n)+"☆".repeat(3-n); }
+function catIcon(cat){ return CATEGORY_EMOJI[cat] || "✿"; }
+function thumbColor(i){
+  const colors = ["var(--sage)","var(--butter)","var(--lavender)","var(--blush)"];
+  return colors[i % colors.length];
+}
+function ideaCardHTML(item, idx){
+  const s = item.series ? (DB.series.find(x=>x.id===item.series)||{}).name : null;
+  return `<div class="idea-card" data-id="${item.id}">
+    ${idx%3===0?`<span class="sticker">${TAPE_STICKERS[idx%TAPE_STICKERS.length]}</span>`:""}
+    <div class="idea-thumb" style="background:${thumbColor(idx)}">${catIcon(item.category)}</div>
+    <div class="idea-body">
+      <div class="idea-title">${escapeHTML(item.title)}</div>
+      <div class="idea-meta">
+        <span class="chip">${item.category}</span>
+        <span class="${statusChipClass(item.status)}">${STATUS_EMOJI[item.status]} ${STATUS_LABEL[item.status]}</span>
+        ${s?`<span class="chip">🌿 ${escapeHTML(s)}</span>`:""}
+      </div>
+    </div>
+    <div class="idea-side">
+      <button class="fav-btn ${item.favorite?'active':''}" data-fav="${item.id}">${item.favorite?"♥":"♡"}</button>
+      <span class="chip" style="border:none;background:none;color:var(--ink-faint);">${starRow(item.priority||1)}</span>
+    </div>
+  </div>`;
+}
+function escapeHTML(s){
+  return (s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+document.addEventListener("click",(e)=>{
+  const favBtn = e.target.closest("[data-fav]");
+  if(favBtn){
+    const item = DB.items.find(i=>i.id===favBtn.dataset.fav);
+    if(item){ item.favorite = !item.favorite; persist(); renderView(currentView); }
+    return;
+  }
+  const ideaCard = e.target.closest(".idea-card, .garden-card, .archive-card");
+  if(ideaCard && !e.target.closest("[data-fav]")){
+    const id = ideaCard.dataset.id;
+    if(id) openContentDetailModal(id);
+  }
+});
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+function renderDashboard(){
+  document.getElementById("moodMsg").textContent = MOODS[Math.floor(Math.random()*MOODS.length)];
+
+  const total = DB.items.length;
+  const growing = DB.items.filter(i=>bucketOf(i.status)==="growing").length;
+  const ready = DB.items.filter(i=>bucketOf(i.status)==="ready").length;
+  const now = new Date();
+  const postedThisMonth = DB.items.filter(i=> i.status==="posted" && i.postedDate &&
+      new Date(i.postedDate+"T00:00:00").getMonth()===now.getMonth() &&
+      new Date(i.postedDate+"T00:00:00").getFullYear()===now.getFullYear()).length;
+
+  document.getElementById("statGrid").innerHTML = `
+    <div class="stat-card c1"><div class="stat-num">${total}</div><div class="stat-lbl"><span class="stat-emoji">🌱</span>ideas planted</div></div>
+    <div class="stat-card c2"><div class="stat-num">${growing}</div><div class="stat-lbl"><span class="stat-emoji">🌿</span>growing</div></div>
+    <div class="stat-card c3"><div class="stat-num">${ready}</div><div class="stat-lbl"><span class="stat-emoji">🌷</span>ready to bloom</div></div>
+    <div class="stat-card c4"><div class="stat-num">${postedThisMonth}</div><div class="stat-lbl"><span class="stat-emoji">🌼</span>posted this month</div></div>
+  `;
+
+  const preview = [...DB.items].sort((a,b)=> b.dateAdded.localeCompare(a.dateAdded)).slice(0,4);
+  document.getElementById("dashIdeaPreview").innerHTML = preview.length ?
+    preview.map((it,i)=>ideaCardHTML(it,i)).join("") :
+    emptyState("nothing growing here yet... 🌱","plant your first idea!");
+
+  renderMiniCalendar();
+
+  const qd = document.getElementById("dashQuickDump");
+  qd.value = "";
+  updateQdCount();
+}
+function emptyState(l1,l2){
+  return `<div class="empty-state"><span class="em">🌱</span><div class="l1">${l1}</div><div class="l2">${l2}</div></div>`;
+}
+function updateQdCount(){
+  const qd = document.getElementById("dashQuickDump");
+  document.getElementById("dashQdCount").textContent = qd.value.length + " characters";
+}
+document.getElementById("dashQuickDump").addEventListener("input", updateQdCount);
+document.getElementById("dashQdSave").addEventListener("click", ()=>{
+  const qd = document.getElementById("dashQuickDump");
+  if(!qd.value.trim()){ toast("write a little something first ✎"); return; }
+  const item = createBlankItem(qd.value.trim().slice(0,80));
+  item.description = qd.value.trim();
+  DB.items.unshift(item);
+  persist();
+  qd.value=""; updateQdCount();
+  toast("planted! 🌱");
+  animateSeedOnDashboard();
+});
+document.getElementById("dashQdFull").addEventListener("click", ()=>{
+  const qd = document.getElementById("dashQuickDump");
+  const item = createBlankItem(qd.value.trim().slice(0,80) || "untitled idea");
+  item.description = qd.value.trim();
+  DB.items.unshift(item);
+  persist();
+  openContentDetailModal(item.id, true);
+});
+function animateSeedOnDashboard(){
+  const grid = document.getElementById("statGrid");
+  grid.classList.add("seed-anim");
+  renderDashboard();
+  setTimeout(()=>grid.classList.remove("seed-anim"), 500);
+}
+
+function renderMiniCalendar(){
+  const now = new Date();
+  const year = now.getFullYear(), month = now.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  let html = `<div class="mini-cal">`;
+  ["S","M","T","W","T","F","S"].forEach(d=> html += `<div class="dow">${d}</div>`);
+  for(let i=0;i<firstDay;i++) html += `<div class="day empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const iso = new Date(year,month,d).toISOString().slice(0,10);
+    const evts = DB.items.filter(i=>i.scheduledDate===iso);
+    const isToday = d===now.getDate();
+    html += `<div class="day ${isToday?'today':''}" data-date="${iso}">
+      <span>${d}</span>
+      ${evts.slice(0,2).map(e=>`<span class="evt">${escapeHTML(e.title)}</span>`).join("")}
+    </div>`;
+  }
+  html += `</div>`;
+  document.getElementById("dashMiniCal").innerHTML = html;
+  document.querySelectorAll("#dashMiniCal .day[data-date]").forEach(d=>{
+    d.addEventListener("click", ()=>{ goto("calendar"); });
+  });
+}
+
+function createBlankItem(title){
+  return {id:uid(), title: title||"untitled idea", description:"", category:"Other", status:"seed",
+    favorite:false, priority:1, series:null, dateAdded: todayISO(), scheduledDate:null,
+    platforms:[], hook:"", caption:"", longDescription:"", tasks: defaultTasks(), script:"", notes:"", assets:[]};
+}
+
+/* ============================================================
+   IDEA GARDEN
+============================================================ */
+let gardenFilters = {status:"all", type:"all", cat:"all", search:"", sort:"newest"};
+function renderGarden(){
+  let items = [...DB.items];
+  if(gardenFilters.status!=="all") items = items.filter(i=> bucketOf(i.status)===gardenFilters.status);
+  if(gardenFilters.type==="series") items = items.filter(i=>i.series);
+  if(gardenFilters.type==="standalone") items = items.filter(i=>!i.series);
+  if(gardenFilters.cat!=="all") items = items.filter(i=>i.category===gardenFilters.cat);
+  if(gardenFilters.search) items = items.filter(i=> i.title.toLowerCase().includes(gardenFilters.search.toLowerCase()) ||
+    (i.description||"").toLowerCase().includes(gardenFilters.search.toLowerCase()));
+
+  items.sort((a,b)=>{
+    if(gardenFilters.sort==="newest") return b.dateAdded.localeCompare(a.dateAdded);
+    if(gardenFilters.sort==="oldest") return a.dateAdded.localeCompare(b.dateAdded);
+    if(gardenFilters.sort==="priority") return (b.priority||0)-(a.priority||0);
+    if(gardenFilters.sort==="status") return STATUSES.indexOf(a.status)-STATUSES.indexOf(b.status);
+    if(gardenFilters.sort==="scheduled") return (a.scheduledDate||"9999").localeCompare(b.scheduledDate||"9999");
+    return 0;
+  });
+
+  const grid = document.getElementById("gardenGrid");
+  if(!items.length){ grid.innerHTML = emptyState("nothing growing here yet... 🌱","try a different filter, or plant something new!"); return; }
+  grid.innerHTML = items.map((it,i)=>{
+    const s = it.series ? (DB.series.find(x=>x.id===it.series)||{}).name : null;
+    return `<div class="garden-card" data-id="${it.id}">
+      <div class="gc-top">
+        <div class="gc-thumb" style="background:${thumbColor(i)}">${catIcon(it.category)}</div>
+      </div>
+      <div class="gc-title">${escapeHTML(it.title)}</div>
+      <div class="gc-desc">${escapeHTML(it.description||"no description yet")}</div>
+      <div class="idea-meta">
+        <span class="chip">${it.category}</span>
+        <span class="${statusChipClass(it.status)}">${STATUS_EMOJI[it.status]} ${STATUS_LABEL[it.status]}</span>
+        ${s?`<span class="chip">🌿 ${escapeHTML(s)}</span>`:""}
+      </div>
+      <div class="gc-foot">
+        <span class="gc-date">${fmtShort(it.dateAdded)}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="stars">${starRow(it.priority||1)}</span>
+          <button class="fav-btn ${it.favorite?'active':''}" data-fav="${it.id}">${it.favorite?"♥":"♡"}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+document.getElementById("gardenStatusFilters").addEventListener("click",(e)=>{
+  const btn = e.target.closest(".filter-pill"); if(!btn) return;
+  document.querySelectorAll("#gardenStatusFilters .filter-pill").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  gardenFilters.status = btn.dataset.status;
+  renderGarden();
+});
+["gardenTypeFilter","gardenCatFilter","gardenSort"].forEach(id=>{
+  document.getElementById(id).addEventListener("change",(e)=>{
+    if(id==="gardenTypeFilter") gardenFilters.type=e.target.value;
+    if(id==="gardenCatFilter") gardenFilters.cat=e.target.value;
+    if(id==="gardenSort") gardenFilters.sort=e.target.value;
+    renderGarden();
+  });
+});
+document.getElementById("gardenSearch").addEventListener("input",(e)=>{
+  gardenFilters.search = e.target.value; renderGarden();
+});
+document.getElementById("plantIdeaBtn").addEventListener("click", ()=> openContentDetailModal(null, true, true));
+
+/* ============================================================
+   SERIES
+============================================================ */
+function seriesProgress(s){
+  const total = s.episodes.length || 1;
+  const done = s.episodes.filter(e=>e.status==="done").length;
+  return Math.round((done/total)*100);
+}
+function renderSeries(){
+  const grid = document.getElementById("seriesGrid");
+  if(!DB.series.length){ grid.innerHTML = emptyState("no series planted yet 🌿","start one with “New Series”!"); return; }
+  grid.innerHTML = DB.series.map(s=>{
+    const next = s.episodes.find(e=>e.status!=="done");
+    const linkedCount = DB.items.filter(i=>i.series===s.id).length;
+    return `<div class="series-card" data-series="${s.id}">
+      <div class="series-cover" style="background:${s.color||'var(--sage)'}">${s.icon||"🌿"}</div>
+      <div class="series-name">${escapeHTML(s.name)}</div>
+      <div class="series-desc">${escapeHTML(s.description||"")}</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${seriesProgress(s)}%"></div></div>
+      <div class="series-meta-row">
+        <span>${s.episodes.length} episodes</span>
+        <span>${next?("next: "+escapeHTML(next.title)):"all done ✓"}</span>
+      </div>
+      <ul class="ep-list" data-series-eps="${s.id}">
+        ${s.episodes.map((e,idx)=>`<li class="ep-item" draggable="true" data-ep="${e.id}" data-series="${s.id}">
+            <span class="ep-num">${String(idx+1).padStart(2,'0')}</span>
+            <span class="ep-title">${escapeHTML(e.title)}</span>
+            <span class="ep-status" data-cycle-ep="${e.id}" data-series-c="${s.id}" title="click to cycle status">${e.status==="done"?"✓":e.status==="current"?"🌱":"·"}</span>
+            <button data-rm-ep="${e.id}" data-rm-series="${s.id}" title="remove episode">✕</button>
+          </li>`).join("")}
+      </ul>
+      <div style="display:flex;justify-content:space-between;margin-top:10px;">
+        <button class="btn btn-outline btn-sm" data-newep="${s.id}">＋ New Episode</button>
+        <button class="btn btn-ghost btn-sm" data-del-series="${s.id}">delete</button>
+      </div>
+    </div>`;
+  }).join("");
+  attachSeriesDrag();
+}
+document.addEventListener("click",(e)=>{
+  const cycle = e.target.closest("[data-cycle-ep]");
+  if(cycle){
+    const s = DB.series.find(x=>x.id===cycle.dataset.seriesC);
+    const ep = s.episodes.find(x=>x.id===cycle.dataset.cycleEp);
+    const order = ["todo","current","done"];
+    ep.status = order[(order.indexOf(ep.status)+1)%order.length];
+    persist(); renderSeries(); return;
+  }
+  const rmEp = e.target.closest("[data-rm-ep]");
+  if(rmEp){
+    const s = DB.series.find(x=>x.id===rmEp.dataset.rmSeries);
+    s.episodes = s.episodes.filter(x=>x.id!==rmEp.dataset.rmEp);
+    persist(); renderSeries(); return;
+  }
+  const newEp = e.target.closest("[data-newep]");
+  if(newEp){
+    const s = DB.series.find(x=>x.id===newEp.dataset.newep);
+    const title = prompt("Episode title?");
+    if(title){ s.episodes.push({id:uid(), title, status:"todo"}); persist(); renderSeries(); }
+    return;
+  }
+  const delSeries = e.target.closest("[data-del-series]");
+  if(delSeries){
+    confirmDialog("This series will be deleted (linked content will stay, just unlinked).", ()=>{
+      DB.items.forEach(i=>{ if(i.series===delSeries.dataset.delSeries) i.series=null; });
+      DB.series = DB.series.filter(s=>s.id!==delSeries.dataset.delSeries);
+      persist(); renderSeries();
+      toast("series removed");
+    });
+    return;
+  }
+});
+function attachSeriesDrag(){
+  document.querySelectorAll(".ep-item").forEach(li=>{
+    li.addEventListener("dragstart",(e)=>{ li.classList.add("dragging"); e.dataTransfer.setData("text/plain", li.dataset.ep); });
+    li.addEventListener("dragend",()=> li.classList.remove("dragging"));
+    li.addEventListener("dragover",(e)=> e.preventDefault());
+    li.addEventListener("drop",(e)=>{
+      e.preventDefault();
+      const draggedId = e.dataTransfer.getData("text/plain");
+      const seriesId = li.dataset.series;
+      const s = DB.series.find(x=>x.id===seriesId);
+      const from = s.episodes.findIndex(x=>x.id===draggedId);
+      const to = s.episodes.findIndex(x=>x.id===li.dataset.ep);
+      if(from<0||to<0) return;
+      const [moved] = s.episodes.splice(from,1);
+      s.episodes.splice(to,0,moved);
+      persist(); renderSeries();
+    });
+  });
+}
+function newSeriesFlow(){
+  const overlay = openModal(`
+    <h3>＋ New Series</h3>
+    <div class="field"><label>Series name</label><input type="text" id="nsName" placeholder="e.g. Design Diaries"></div>
+    <div class="field"><label>Description</label><textarea id="nsDesc" rows="2" placeholder="what's this series about?"></textarea></div>
+    <button class="btn btn-primary" id="nsSave">Plant series 🌿</button>
+  `);
+  overlay.querySelector("#nsSave").addEventListener("click", ()=>{
+    const name = overlay.querySelector("#nsName").value.trim();
+    if(!name){ toast("give it a name first ♡"); return; }
+    DB.series.push({id:uid(), name, description:overlay.querySelector("#nsDesc").value.trim(),
+      color:["var(--sage)","var(--butter)","var(--lavender)","var(--blush)"][DB.series.length%4], icon:"🌿", episodes:[]});
+    persist(); closeModal(overlay); toast("series planted 🌿");
+    if(currentView==="series") renderSeries();
+  });
+}
+document.getElementById("newSeriesBtn2").addEventListener("click", newSeriesFlow);
+document.getElementById("qaNewSeries").addEventListener("click", newSeriesFlow);
+
+/* ============================================================
+   CALENDAR
+============================================================ */
+let calState = { year:new Date().getFullYear(), month:new Date().getMonth(), view:"month" };
+function renderCalendar(){
+  document.getElementById("calTitle").textContent = new Date(calState.year, calState.month, 1)
+    .toLocaleDateString(undefined,{month:"long", year:"numeric"});
+  const body = document.getElementById("calBody");
+  if(calState.view==="list"){ body.innerHTML = calendarListView(); attachCalDrag(); return; }
+  if(calState.view==="week"){ body.innerHTML = calendarWeekView(); attachCalDrag(); return; }
+  body.innerHTML = calendarMonthView();
+  attachCalDrag();
+}
+function calendarMonthView(){
+  const {year,month} = calState;
+  const firstDay = new Date(year,month,1).getDay();
+  const daysInMonth = new Date(year,month+1,0).getDate();
+  const now = new Date();
+  let html = `<div class="calendar-full">`;
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(d=> html+=`<div class="dow">${d}</div>`);
+  for(let i=0;i<firstDay;i++) html += `<div class="cal-cell empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const iso = new Date(year,month,d).toISOString().slice(0,10);
+    const isToday = now.getFullYear()===year && now.getMonth()===month && now.getDate()===d;
+    const evts = DB.items.filter(i=>i.scheduledDate===iso);
+    html += `<div class="cal-cell ${isToday?'today':''}" data-date="${iso}">
+      <span class="num ${isToday?'today-num':''}">${d}</span>
+      ${evts.map(e=>`<div class="cal-evt" draggable="true" data-id="${e.id}" style="background:${thumbColor(CATEGORIES.indexOf(e.category))}">${escapeHTML(e.title)}</div>`).join("")}
+    </div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+function calendarWeekView(){
+  const now = new Date(calState.year, calState.month, 1);
+  const dow = now.getDay();
+  const start = new Date(now); start.setDate(now.getDate()-dow);
+  let html = `<div class="calendar-full">`;
+  ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(d=> html+=`<div class="dow">${d}</div>`);
+  for(let i=0;i<7;i++){
+    const d = new Date(start); d.setDate(start.getDate()+i);
+    const iso = d.toISOString().slice(0,10);
+    const evts = DB.items.filter(it=>it.scheduledDate===iso);
+    const isToday = iso===todayISO();
+    html += `<div class="cal-cell ${isToday?'today':''}" data-date="${iso}" style="min-height:160px;">
+      <span class="num ${isToday?'today-num':''}">${d.getDate()}</span>
+      ${evts.map(e=>`<div class="cal-evt" draggable="true" data-id="${e.id}" style="background:${thumbColor(CATEGORIES.indexOf(e.category))}">${escapeHTML(e.title)}</div>`).join("")}
+    </div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+function calendarListView(){
+  const upcoming = DB.items.filter(i=>i.scheduledDate).sort((a,b)=>a.scheduledDate.localeCompare(b.scheduledDate));
+  if(!upcoming.length) return emptyState("nothing scheduled yet 📅","drag an idea onto a date, or add a scheduled date in its Content Box.");
+  const byDate = {};
+  upcoming.forEach(i=>{ (byDate[i.scheduledDate] = byDate[i.scheduledDate]||[]).push(i); });
+  return `<div class="cal-list-view">` + Object.keys(byDate).map(date=>`
+    <div class="cal-list-day">
+      <div class="cal-list-date">${fmtShort(date)}</div>
+      <div class="cal-list-events">
+        ${byDate[date].map(it=>`<div class="idea-card" data-id="${it.id}" style="cursor:pointer;">
+          <div class="idea-thumb" style="background:${thumbColor(CATEGORIES.indexOf(it.category))}">${catIcon(it.category)}</div>
+          <div class="idea-body"><div class="idea-title">${escapeHTML(it.title)}</div>
+          <div class="idea-meta"><span class="${statusChipClass(it.status)}">${STATUS_EMOJI[it.status]} ${STATUS_LABEL[it.status]}</span></div></div>
+        </div>`).join("")}
+      </div>
+    </div>`).join("") + `</div>`;
+}
+function attachCalDrag(){
+  document.querySelectorAll(".cal-evt").forEach(el=>{
+    el.addEventListener("dragstart",(e)=> e.dataTransfer.setData("text/plain", el.dataset.id));
+  });
+  document.querySelectorAll(".cal-cell[data-date]").forEach(cell=>{
+    cell.addEventListener("dragover",(e)=> e.preventDefault());
+    cell.addEventListener("drop",(e)=>{
+      e.preventDefault();
+      const id = e.dataTransfer.getData("text/plain");
+      const item = DB.items.find(i=>i.id===id);
+      if(item){ item.scheduledDate = cell.dataset.date; persist(); renderCalendar(); toast("moved to "+fmtShort(cell.dataset.date)); }
+    });
+    cell.addEventListener("click",(e)=>{
+      if(e.target.closest(".cal-evt")){ openContentDetailModal(e.target.closest(".cal-evt").dataset.id); return; }
+      openContentDetailModal(null, true, false, cell.dataset.date);
+    });
+  });
+}
+document.getElementById("calPrev").addEventListener("click", ()=>{
+  calState.month--; if(calState.month<0){calState.month=11; calState.year--;} renderCalendar();
+});
+document.getElementById("calNext").addEventListener("click", ()=>{
+  calState.month++; if(calState.month>11){calState.month=0; calState.year++;} renderCalendar();
+});
+document.getElementById("calViewToggle").addEventListener("click",(e)=>{
+  const btn = e.target.closest("button"); if(!btn) return;
+  document.querySelectorAll("#calViewToggle button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  calState.view = btn.dataset.calview;
+  renderCalendar();
+});
+
+/* ============================================================
+   CONTENT BOX (page + shared detail editor used by modal too)
+============================================================ */
+let cbSelectedId = null;
+function renderContentBox(){
+  const list = document.getElementById("cbList");
+  if(!DB.items.length){ list.innerHTML = emptyState("nothing here yet","create your first content!"); }
+  else{
+    list.innerHTML = [...DB.items].sort((a,b)=>b.dateAdded.localeCompare(a.dateAdded)).map(it=>`
+      <div class="cb-list-item ${it.id===cbSelectedId?'active':''}" data-id="${it.id}">
+        <div class="t">${escapeHTML(it.title)}</div>
+        <div class="s">${STATUS_EMOJI[it.status]} ${STATUS_LABEL[it.status]} · ${it.category}</div>
+      </div>`).join("");
+    list.querySelectorAll(".cb-list-item").forEach(el=> el.addEventListener("click", ()=>{
+      cbSelectedId = el.dataset.id; renderContentBox();
+    }));
+  }
+  const detail = document.getElementById("cbDetail");
+  if(!cbSelectedId || !DB.items.find(i=>i.id===cbSelectedId)){
+    detail.innerHTML = `<div class="cb-empty"><span style="font-size:30px;">📝</span><div class="hand" style="font-size:18px;margin-top:8px;">pick a piece of content on the left, or plant a new one ✿</div></div>`;
+    return;
+  }
+  detail.innerHTML = contentDetailHTML(DB.items.find(i=>i.id===cbSelectedId));
+  attachDetailHandlers(detail, cbSelectedId, ()=>{ renderContentBox(); });
+}
+document.getElementById("cbNewBtn").addEventListener("click", ()=>{
+  const item = createBlankItem("untitled idea");
+  DB.items.unshift(item); persist();
+  cbSelectedId = item.id; goto("contentbox");
+});
+
+/* Shared detail renderer (used by Content Box page and modal) */
+function contentDetailHTML(item){
+  const linkedSeries = item.series ? DB.series.find(s=>s.id===item.series) : null;
+  const doneCount = item.tasks.filter(t=>t.done).length;
+  const pct = item.tasks.length ? Math.round((doneCount/item.tasks.length)*100) : 0;
+  return `
+  <div class="cb-head">
+    <div class="cb-thumb-big" style="background:${thumbColor(CATEGORIES.indexOf(item.category))}">${catIcon(item.category)}</div>
+    <div class="cb-head-info">
+      <input class="cb-title-input" data-field="title" value="${escapeHTML(item.title)}" placeholder="untitled idea">
+      <div class="cb-sub-row">
+        <select class="select-mini" data-field="category">
+          ${CATEGORIES.map(c=>`<option value="${c}" ${c===item.category?"selected":""}>${c}</option>`).join("")}
+        </select>
+        <select class="select-mini" data-field="series">
+          <option value="">no series</option>
+          ${DB.series.map(s=>`<option value="${s.id}" ${s.id===item.series?"selected":""}>${escapeHTML(s.name)}</option>`).join("")}
+        </select>
+        <input type="date" class="select-mini" data-field="scheduledDate" value="${item.scheduledDate||""}">
+        <button class="fav-btn ${item.favorite?'active':''}" data-fav="${item.id}" style="font-size:20px;">${item.favorite?"♥":"♡"}</button>
+        <button class="btn btn-ghost btn-sm" data-del-item="${item.id}">delete</button>
+      </div>
+      <div class="status-stepper">
+        ${STATUSES.map(st=>`<button class="status-step ${st===item.status?'current':(STATUSES.indexOf(st)<STATUSES.indexOf(item.status)?'done':'')}" data-set-status="${st}">${STATUS_EMOJI[st]} ${STATUS_LABEL[st]}</button>`).join("")}
+      </div>
+      ${linkedSeries?`<div style="margin-top:8px;font-size:12px;color:var(--ink-soft);">part of 🌿 <strong>${escapeHTML(linkedSeries.name)}</strong></div>`:""}
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="script">Script</button>
+    <button class="tab-btn" data-tab="tasks">Tasks</button>
+    <button class="tab-btn" data-tab="assets">Assets</button>
+    <button class="tab-btn" data-tab="notes">Notes</button>
+  </div>
+
+  <div class="tab-pane active" data-pane="overview">
+    <div class="field"><label>Hook</label><textarea rows="2" data-field="hook" placeholder="the first line that stops the scroll...">${escapeHTML(item.hook)}</textarea></div>
+    <div class="field"><label>Caption</label><textarea rows="2" data-field="caption" placeholder="write your caption...">${escapeHTML(item.caption)}</textarea></div>
+    <div class="field"><label>Description</label><textarea rows="3" data-field="longDescription" placeholder="more detail about this piece...">${escapeHTML(item.longDescription)}</textarea></div>
+    <div class="field"><label>Platforms</label>
+      <div class="platform-checks">
+        ${["Instagram","YouTube","TikTok"].map(p=>`<label class="pcheck"><input type="checkbox" data-platform="${p}" ${item.platforms.includes(p)?"checked":""}> ${p}</label>`).join("")}
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane" data-pane="script">
+    <textarea class="script-area" data-field="script" placeholder="write your script here, distraction-free ✎">${escapeHTML(item.script)}</textarea>
+  </div>
+
+  <div class="tab-pane" data-pane="tasks">
+    <div class="task-progress-wrap">
+      <div class="flower-progress">${flowerSVG(pct)}</div>
+      <div>
+        <div style="font-family:var(--font-nav);font-weight:700;font-size:14px;">${pct}% complete</div>
+        <div style="font-size:11.5px;color:var(--ink-faint);">${doneCount}/${item.tasks.length} tasks done</div>
+      </div>
+    </div>
+    ${item.tasks.map(t=>`<div class="task-row ${t.done?'done':''}">
+        <input type="checkbox" data-task="${t.id}" ${t.done?"checked":""}>
+        <span class="t">${escapeHTML(t.text)}</span>
+        <button data-rm-task="${t.id}" style="background:none;border:none;color:var(--ink-faint);">✕</button>
+      </div>`).join("")}
+    <div style="display:flex;gap:6px;margin-top:10px;">
+      <input type="text" id="newTaskInput" placeholder="add a task..." style="flex:1;font-family:var(--font-body);padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--ivory);">
+      <button class="btn btn-outline btn-sm" id="addTaskBtn">＋ Add</button>
+    </div>
+  </div>
+
+  <div class="tab-pane" data-pane="assets">
+    <div class="asset-drop" id="itemAssetDrop">click to attach a reference / file<br><span style="font-size:11px;">(saved as a note — this demo stores file names, not binary uploads)</span></div>
+    <input type="file" id="itemAssetInput" multiple style="display:none;">
+    <div class="asset-mini-grid">
+      ${(item.assets||[]).map(a=>`<div class="asset-mini"><button class="rm" data-rm-item-asset="${a.id}">✕</button><span class="ic">${ASSET_ICON[a.category]||"📎"}</span>${escapeHTML(a.name)}</div>`).join("") || `<span style="color:var(--ink-faint);font-size:12px;">no assets attached yet</span>`}
+    </div>
+  </div>
+
+  <div class="tab-pane" data-pane="notes">
+    <textarea class="notes-area" data-field="notes" placeholder="jot down anything here...">${escapeHTML(item.notes)}</textarea>
+  </div>
+  `;
+}
+function flowerSVG(pct){
+  const petals = Math.round((pct/100)*6);
+  const angles = [0,60,120,180,240,300];
+  let petalHTML = "";
+  for(let i=0;i<6;i++){
+    const filled = i<petals;
+    const a = angles[i]*Math.PI/180;
+    const cx = 19 + Math.cos(a)*9, cy = 19 + Math.sin(a)*9;
+    petalHTML += `<circle cx="${cx}" cy="${cy}" r="6" fill="${filled?'var(--dusty-rose)':'var(--line)'}" />`;
+  }
+  return `<svg viewBox="0 0 38 38">${petalHTML}<circle cx="19" cy="19" r="5" fill="var(--butter)"/></svg>`;
+}
+
+function attachDetailHandlers(container, itemId, onChange){
+  const item = DB.items.find(i=>i.id===itemId);
+  if(!item) return;
+
+  container.querySelectorAll("[data-tab]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      container.querySelectorAll("[data-tab]").forEach(b=>b.classList.remove("active"));
+      container.querySelectorAll("[data-pane]").forEach(p=>p.classList.remove("active"));
+      btn.classList.add("active");
+      container.querySelector(`[data-pane="${btn.dataset.tab}"]`).classList.add("active");
+    });
+  });
+
+  container.querySelectorAll("[data-field]").forEach(field=>{
+    const evt = (field.tagName==="SELECT" || field.type==="date") ? "change" : "input";
+    field.addEventListener(evt, ()=>{
+      const key = field.dataset.field;
+      item[key] = field.value;
+      persist();
+      if(key==="title" || key==="category"){ onChange(); }
+    });
+  });
+
+  container.querySelectorAll("[data-platform]").forEach(cb=>{
+    cb.addEventListener("change", ()=>{
+      const p = cb.dataset.platform;
+      if(cb.checked){ if(!item.platforms.includes(p)) item.platforms.push(p); }
+      else{ item.platforms = item.platforms.filter(x=>x!==p); }
+      persist();
+    });
+  });
+
+  container.querySelectorAll("[data-set-status]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const wasPosted = item.status==="posted";
+      item.status = btn.dataset.setStatus;
+      if(item.status==="posted" && !wasPosted){ item.postedDate = todayISO(); }
+      persist();
+      onChange();
+      if(item.status==="posted"){
+        toast("it bloomed! 🌼");
+        setTimeout(()=>{ const el=document.querySelector(".cb-head, .modal .cb-head"); if(el) el.classList.add("bloom-anim"); },10);
+      }
+    });
+  });
+
+  container.querySelectorAll("[data-task]").forEach(cb=>{
+    cb.addEventListener("change", ()=>{
+      const t = item.tasks.find(x=>x.id===cb.dataset.task);
+      t.done = cb.checked; persist(); onChange();
+    });
+  });
+  container.querySelectorAll("[data-rm-task]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      item.tasks = item.tasks.filter(t=>t.id!==btn.dataset.rmTask); persist(); onChange();
+    });
+  });
+  const addTaskBtn = container.querySelector("#addTaskBtn");
+  if(addTaskBtn) addTaskBtn.addEventListener("click", ()=>{
+    const inp = container.querySelector("#newTaskInput");
+    if(inp.value.trim()){ item.tasks.push({id:uid(), text:inp.value.trim(), done:false}); persist(); onChange(); }
+  });
+
+  const dropZone = container.querySelector("#itemAssetDrop");
+  const assetInput = container.querySelector("#itemAssetInput");
+  if(dropZone){
+    dropZone.addEventListener("click", ()=> assetInput.click());
+    assetInput.addEventListener("change", ()=>{
+      Array.from(assetInput.files).forEach(f=>{
+        item.assets = item.assets || [];
+        item.assets.push({id:uid(), name:f.name, category:"References"});
+      });
+      persist(); onChange();
+    });
+  }
+  container.querySelectorAll("[data-rm-item-asset]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      item.assets = item.assets.filter(a=>a.id!==btn.dataset.rmItemAsset); persist(); onChange();
+    });
+  });
+
+  const delBtn = container.querySelector("[data-del-item]");
+  if(delBtn) delBtn.addEventListener("click", ()=>{
+    confirmDialog("This idea will be removed from your garden for good.", ()=>{
+      DB.items = DB.items.filter(i=>i.id!==itemId);
+      persist();
+      if(cbSelectedId===itemId) cbSelectedId=null;
+      toast("removed");
+      const overlay = container.closest(".overlay");
+      if(overlay) closeModal(overlay);
+      renderView(currentView);
+    });
+  });
+  const favBtn = container.querySelector("[data-fav]");
+  // handled globally already, but ensure re-render for modal context
+}
+
+function openContentDetailModal(itemId, focusScript, isNew, presetDate){
+  let item;
+  if(itemId){ item = DB.items.find(i=>i.id===itemId); }
+  if(!item){
+    item = createBlankItem("untitled idea");
+    if(presetDate) item.scheduledDate = presetDate;
+    DB.items.unshift(item);
+    persist();
+  }
+  const overlay = openModal(`<div class="cb-detail" style="box-shadow:none;border:none;padding:0;">${contentDetailHTML(item)}</div>`, {wide:true});
+  const container = overlay.querySelector(".cb-detail");
+  function refreshModal(){
+    const stillExists = DB.items.find(i=>i.id===item.id);
+    if(stillExists){ container.innerHTML = contentDetailHTML(stillExists); attachDetailHandlers(container, item.id, refreshModal); }
+    renderView(currentView);
+  }
+  attachDetailHandlers(container, item.id, refreshModal);
+  if(focusScript){
+    setTimeout(()=>{ const titleInput = container.querySelector(".cb-title-input"); if(titleInput){ titleInput.focus(); titleInput.select(); } }, 60);
+  }
+  renderView(currentView);
+}
+document.getElementById("qaNewContent").addEventListener("click", ()=> openContentDetailModal(null, true, true));
+document.getElementById("cbList") && document.getElementById("cbList").addEventListener("click", ()=>{});
+
+/* ============================================================
+   QUICK DUMP (sidebar / global quick action)
+============================================================ */
+document.getElementById("qaDump").addEventListener("click", ()=>{
+  const overlay = openModal(`
+    <div class="quickdump-card" style="box-shadow:none;">
+      <div class="pixel" style="font-size:10px;letter-spacing:0.5px;margin-bottom:8px;">QUICK DUMP ♡</div>
+      <textarea id="modalQd" placeholder="type your random content thought here..."></textarea>
+      <div class="qd-foot">
+        <span class="qd-count" id="modalQdCount">0 characters</span>
+        <div style="display:flex;gap:14px;align-items:center;">
+          <a class="qd-link" id="modalQdFull">or → turn into full content</a>
+          <button class="btn btn-primary btn-sm" id="modalQdSave">Plant this idea 🌱</button>
+        </div>
+      </div>
+    </div>
+  `);
+  const qd = overlay.querySelector("#modalQd");
+  qd.addEventListener("input", ()=> overlay.querySelector("#modalQdCount").textContent = qd.value.length+" characters");
+  overlay.querySelector("#modalQdSave").addEventListener("click", ()=>{
+    if(!qd.value.trim()){ toast("write a little something first ✎"); return; }
+    const item = createBlankItem(qd.value.trim().slice(0,80));
+    item.description = qd.value.trim();
+    DB.items.unshift(item); persist();
+    toast("planted! 🌱");
+    closeModal(overlay);
+    renderView(currentView);
+  });
+  overlay.querySelector("#modalQdFull").addEventListener("click", ()=>{
+    const item = createBlankItem(qd.value.trim().slice(0,80) || "untitled idea");
+    item.description = qd.value.trim();
+    DB.items.unshift(item); persist();
+    closeModal(overlay);
+    openContentDetailModal(item.id, true);
+  });
+  qd.focus();
+});
+document.getElementById("mobileQuickDump").addEventListener("click", ()=> document.getElementById("qaDump").click());
+
+/* ============================================================
+   ARCHIVE
+============================================================ */
+function renderArchive(){
+  const posted = DB.items.filter(i=>i.status==="posted");
+  const yearSel = document.getElementById("archYear");
+  const years = Array.from(new Set(posted.map(i=> (i.postedDate||i.dateAdded).slice(0,4)))).sort().reverse();
+  if(yearSel.options.length<=0 || yearSel.dataset.built!=="1"){
+    yearSel.innerHTML = `<option value="all">All years</option>` + years.map(y=>`<option value="${y}">${y}</option>`).join("");
+    yearSel.dataset.built="1";
+  }
+  const seriesSel = document.getElementById("archSeries");
+  if(seriesSel.dataset.built!=="1"){
+    seriesSel.innerHTML = `<option value="all">All series</option>` + DB.series.map(s=>`<option value="${s.id}">${escapeHTML(s.name)}</option>`).join("");
+    seriesSel.dataset.built="1";
+  }
+  const monthSel = document.getElementById("archMonth");
+  if(monthSel.dataset.built!=="1"){
+    const names = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    monthSel.innerHTML = `<option value="all">All months</option>` + names.map((n,i)=>`<option value="${i}">${n}</option>`).join("");
+    monthSel.dataset.built="1";
+  }
+
+  let filtered = [...posted];
+  const y = yearSel.value, m = monthSel.value, p = document.getElementById("archPlatform").value, s = seriesSel.value;
+  if(y!=="all") filtered = filtered.filter(i=>(i.postedDate||i.dateAdded).slice(0,4)===y);
+  if(m!=="all") filtered = filtered.filter(i=> new Date((i.postedDate||i.dateAdded)+"T00:00:00").getMonth()===Number(m));
+  if(p!=="all") filtered = filtered.filter(i=> i.platforms.includes(p));
+  if(s!=="all") filtered = filtered.filter(i=> i.series===s);
+
+  const thisYear = new Date().getFullYear();
+  const plantedThisYear = DB.items.filter(i=>i.dateAdded.slice(0,4)===String(thisYear)).length;
+  const bloomedThisYear = DB.items.filter(i=>i.status==="posted" && (i.postedDate||"").slice(0,4)===String(thisYear)).length;
+  document.getElementById("archiveSummary").innerHTML = `
+    <div class="archive-stat">You planted <strong>${plantedThisYear}</strong> ideas this year.</div>
+    <div class="archive-stat"><strong>${bloomedThisYear}</strong> of them bloomed. 🌷</div>
+  `;
+
+  const grid = document.getElementById("archiveGrid");
+  if(!filtered.length){ grid.innerHTML = emptyState("no blooms here yet 🌼","posted content will show up in the archive automatically."); return; }
+  filtered.sort((a,b)=> (b.postedDate||b.dateAdded).localeCompare(a.postedDate||a.dateAdded));
+  grid.innerHTML = filtered.map((it,i)=>{
+    const sname = it.series ? (DB.series.find(x=>x.id===it.series)||{}).name : null;
+    return `<div class="archive-card" data-id="${it.id}">
+      <div class="archive-thumb" style="background:${thumbColor(i)}">${catIcon(it.category)}</div>
+      <div class="archive-title">${escapeHTML(it.title)}</div>
+      <div class="archive-meta">${fmtDate(it.postedDate||it.dateAdded)} · ${it.platforms.join(", ")||"—"}${sname?" · "+escapeHTML(sname):""}</div>
+    </div>`;
+  }).join("");
+}
+["archYear","archMonth","archPlatform","archSeries"].forEach(id=>{
+  document.getElementById(id).addEventListener("change", renderArchive);
+});
+
+/* ============================================================
+   ASSETS
+============================================================ */
+let assetCatFilter = "all", assetSearch="";
+function renderAssets(){
+  const catGrid = document.getElementById("assetCatGrid");
+  catGrid.innerHTML = `<div class="asset-cat-card ${assetCatFilter==='all'?'active':''}" data-cat="all"><span class="ic">✿</span><div class="n">All</div><div class="c">${DB.assets.length} items</div></div>` +
+    ASSET_CATS.map(c=>{
+      const count = DB.assets.filter(a=>a.category===c).length;
+      return `<div class="asset-cat-card ${assetCatFilter===c?'active':''}" data-cat="${c}">
+        <span class="ic">${ASSET_ICON[c]}</span><div class="n">${c}</div><div class="c">${count} items</div>
+      </div>`;
+    }).join("");
+  catGrid.querySelectorAll("[data-cat]").forEach(el=> el.addEventListener("click", ()=>{ assetCatFilter = el.dataset.cat; renderAssets(); }));
+
+  let items = [...DB.assets];
+  if(assetCatFilter!=="all") items = items.filter(a=>a.category===assetCatFilter);
+  if(assetSearch) items = items.filter(a=> a.name.toLowerCase().includes(assetSearch.toLowerCase()) || (a.tags||[]).some(t=>t.toLowerCase().includes(assetSearch.toLowerCase())));
+
+  const grid = document.getElementById("assetGrid");
+  if(!items.length){ grid.innerHTML = emptyState("no assets here yet 🗂","add backgrounds, fonts, stickers, and more!"); return; }
+  grid.innerHTML = items.map(a=>`<div class="asset-mini" style="text-align:left;">
+    <button class="rm" data-del-asset="${a.id}">✕</button>
+    <span class="ic">${ASSET_ICON[a.category]||"📎"}</span>
+    <div style="font-family:var(--font-nav);font-weight:600;font-size:12px;">${escapeHTML(a.name)}</div>
+    <div>${(a.tags||[]).map(t=>`<span class="asset-tag">#${escapeHTML(t)}</span>`).join("")}</div>
+  </div>`).join("");
+}
+document.getElementById("assetSearch").addEventListener("input",(e)=>{ assetSearch=e.target.value; renderAssets(); });
+document.addEventListener("click",(e)=>{
+  const del = e.target.closest("[data-del-asset]");
+  if(del){ DB.assets = DB.assets.filter(a=>a.id!==del.dataset.delAsset); persist(); renderAssets(); }
+});
+document.getElementById("assetUploadBtn").addEventListener("click", ()=>{
+  const overlay = openModal(`
+    <h3>＋ Add Asset</h3>
+    <div class="field"><label>Name</label><input type="text" id="asName" placeholder="e.g. warm grain overlay"></div>
+    <div class="field"><label>Category</label>
+      <select class="field-input" id="asCat">${ASSET_CATS.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
+    </div>
+    <div class="field"><label>Tags (comma separated)</label><input type="text" id="asTags" placeholder="warm, grain, vintage"></div>
+    <div class="field"><label>Or attach a file</label>
+      <div class="asset-drop" id="asDrop">click to choose a file</div>
+      <input type="file" id="asFile" style="display:none;">
+      <div id="asFileName" style="font-size:11.5px;color:var(--ink-faint);margin-top:4px;"></div>
+    </div>
+    <button class="btn btn-primary" id="asSave">Add to library</button>
+  `);
+  overlay.querySelector("#asDrop").addEventListener("click", ()=> overlay.querySelector("#asFile").click());
+  overlay.querySelector("#asFile").addEventListener("change", (e)=>{
+    if(e.target.files[0]){
+      overlay.querySelector("#asFileName").textContent = "📎 "+e.target.files[0].name;
+      if(!overlay.querySelector("#asName").value) overlay.querySelector("#asName").value = e.target.files[0].name;
+    }
+  });
+  overlay.querySelector("#asSave").addEventListener("click", ()=>{
+    const name = overlay.querySelector("#asName").value.trim();
+    if(!name){ toast("give your asset a name ♡"); return; }
+    const tags = overlay.querySelector("#asTags").value.split(",").map(t=>t.trim()).filter(Boolean);
+    DB.assets.push({id:uid(), name, category: overlay.querySelector("#asCat").value, tags, dateAdded: todayISO()});
+    persist(); closeModal(overlay); toast("added to library 🗂"); renderAssets();
+  });
+});
+
+/* ============================================================
+   ANALYTICS
+============================================================ */
+function renderAnalytics(){
+  const now = new Date();
+  const postedThisMonth = DB.items.filter(i=>i.status==="posted" && i.postedDate && new Date(i.postedDate+"T00:00:00").getMonth()===now.getMonth()).length;
+  const ideasCreated = DB.items.length;
+  const ideasCompleted = DB.items.filter(i=>i.status==="posted").length;
+  const completionRate = ideasCreated ? Math.round((ideasCompleted/ideasCreated)*100) : 0;
+  const catCounts = {};
+  DB.items.forEach(i=> catCounts[i.category] = (catCounts[i.category]||0)+1);
+  const mostUsedCat = Object.keys(catCounts).sort((a,b)=>catCounts[b]-catCounts[a])[0] || "—";
+  const seriesCounts = {};
+  DB.items.forEach(i=>{ if(i.series) seriesCounts[i.series] = (seriesCounts[i.series]||0)+1; });
+  const mostActiveSeriesId = Object.keys(seriesCounts).sort((a,b)=>seriesCounts[b]-seriesCounts[a])[0];
+  const mostActiveSeries = mostActiveSeriesId ? (DB.series.find(s=>s.id===mostActiveSeriesId)||{}).name : "—";
+
+  document.getElementById("anStatGrid").innerHTML = [
+    ["🌼", postedThisMonth, "posted this month"],
+    ["🌱", ideasCreated, "ideas created"],
+    ["🌷", ideasCompleted, "ideas completed"],
+    ["✿", completionRate+"%", "completion rate"],
+    [catIcon(mostUsedCat), mostUsedCat, "most-used category"],
+    ["🌿", mostActiveSeries, "most active series"],
+  ].map(([ic,num,lbl])=>`<div class="stat-card"><div class="stat-num" style="font-size:26px;">${ic} ${num}</div><div class="stat-lbl">${lbl}</div></div>`).join("");
+
+  // posting frequency last 8 weeks
+  const weeks = [];
+  for(let i=7;i>=0;i--){
+    const end = new Date(); end.setDate(end.getDate()-i*7);
+    const start = new Date(end); start.setDate(end.getDate()-6);
+    const count = DB.items.filter(it=> it.postedDate && new Date(it.postedDate+"T00:00:00")>=start && new Date(it.postedDate+"T00:00:00")<=end).length;
+    weeks.push({label:"W"+(8-i), count});
+  }
+  const max = Math.max(1, ...weeks.map(w=>w.count));
+  document.getElementById("anFreqChart").innerHTML = weeks.map(w=>`
+    <div class="bar-wrap">
+      <div class="bar" style="height:${(w.count/max)*100}%;"></div>
+      <div class="bar-lbl">${w.label}</div>
+    </div>`).join("");
+
+  const colors = ["var(--sage-deep)","var(--dusty-rose)","#c9a8d9","var(--butter)","#a9c6dd","var(--ink-faint)"];
+  document.getElementById("anCatChart").innerHTML = CATEGORIES.map((c,i)=>{
+    const count = catCounts[c]||0;
+    const pct = ideasCreated ? Math.round((count/ideasCreated)*100) : 0;
+    return `<div class="legend-row"><span class="legend-dot" style="background:${colors[i]}"></span>${c} — ${count} (${pct}%)
+      <div style="flex:1;height:6px;background:var(--ivory);border-radius:6px;margin-left:8px;overflow:hidden;">
+        <div style="height:100%;width:${pct}%;background:${colors[i]};"></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+renderDashboard();
+})();
+
+</script>
+</body>
+</html>
