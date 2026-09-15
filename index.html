@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3Cstyle%3E.bg%7Bfill:%23FFF9F3;stroke:%23F2D5D5;stroke-width:2;%7D.c%7Bfill:none;stroke:%23352E2B;stroke-width:5;stroke-linecap:round;%7D.vine%7Bfill:none;stroke:%238A9A78;stroke-width:1.8;stroke-linecap:round;%7D.leaf%7Bfill:%23AEBB98;stroke:%237E8C6B;stroke-width:.7;%7D.flower%7Bfill:%23F4BFC2;stroke:%23FFF9F3;stroke-width:.7;%7D.gold%7Bfill:%23D8BC72;%7D.spark%7Bfill:%23D8BC72;%7D%3C/style%3E%3C/defs%3E%3Cpath class='bg' d='M32 3C37 8 45 7 50 11C55 15 55 23 60 28C58 34 61 42 56 47C52 53 44 52 38 59C32 57 25 61 20 56C13 54 12 47 7 43C8 36 4 29 8 24C8 17 15 14 19 9C24 9 28 5 32 3Z'/%3E%3Cpath class='c' d='M48 18C44 12 37 10 30 11C19 13 12 22 13 32C14 43 22 51 33 52C40 52 46 49 50 44'/%3E%3Cpath class='vine' d='M35 51C38 45 40 40 39 34C38 27 41 21 47 17'/%3E%3Cpath class='vine' d='M39 34C33 30 28 30 24 33'/%3E%3Cpath class='leaf' d='M30 31C25 26 20 27 18 31C22 35 27 35 30 31Z'/%3E%3Cpath class='leaf' d='M40 25C40 19 44 16 48 17C49 22 46 26 40 25Z'/%3E%3Cpath class='leaf' d='M39 43C44 39 48 40 50 43C46 47 42 47 39 43Z'/%3E%3Cg transform='translate(48 15)'%3E%3Cpath class='flower' d='M0 0C-5-5-9-1-7 3C-6 6-2 6 0 3C2 6 6 6 7 3C9-1 5-5 0 0Z'/%3E%3Cpath class='flower' d='M0 0C5-5 9-1 7 3C6 6 2 6 0 3C-2 6-6 6-7 3C-9-1-5-5 0 0Z' transform='rotate(90)'/%3E%3Ccircle class='gold' cx='0' cy='1' r='2'/%3E%3C/g%3E%3Cpath class='spark' d='M16 16L17 19L20 20L17 21L16 24L15 21L12 20L15 19Z'/%3E%3Cpath class='spark' d='M52 31L52.7 33L55 34L52.7 35L52 37L51.3 35L49 34L51.3 33Z'/%3E%3Cpath class='spark' d='M27 47L27.7 48.5L29.5 49L27.7 49.5L27 51L26.3 49.5L24.5 49L26.3 48.5Z'/%3E%3Ccircle cx='48' cy='52' r='1.3' fill='%23D8BC72'/%3E%3C/svg%3E">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Congarden ✿ Personal Inspiration & Notes Garden</title>
@@ -10,12 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,400;0,700;1,400&family=Imprima&family=Instrument+Serif:ital@0;1&family=Josefin+Sans:wght@300;400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
-
-    <!-- Firebase SDKs for Cloud Auth, Database & Storage -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
     <style>
         /* ==================== CONGARDEN BRANDING & VISUAL SYSTEM ==================== */
@@ -40,7 +33,6 @@
             --font-ui: 'Josefin Sans', sans-serif;
             --font-body: 'Imprima', sans-serif;
             --font-cute: 'Bellota', cursive;
-            --font-pixel: 'Press Start 2P', monospace;
         }
 
         * {
@@ -65,181 +57,6 @@
 
         ::selection { background: var(--accent-pink-soft); color: var(--text-main); }
         input, textarea, button { font-family: inherit; }
-
-        /* ==================== ENHANCED BEAUTIFUL WELCOME / AUTH OVERLAY ==================== */
-        .auth-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(250, 246, 240, 0.82);
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        /* Decorative Scrapbook Background Ornaments */
-        .auth-bg-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.6;
-            z-index: -1;
-            animation: floatBlob 10s ease-in-out infinite alternate;
-        }
-        .blob-1 { top: 10%; left: 15%; width: 320px; height: 320px; background: var(--accent-pink); }
-        .blob-2 { bottom: 12%; right: 15%; width: 360px; height: 360px; background: var(--accent-sage); }
-        .blob-3 { top: 45%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: var(--accent-lavender); opacity: 0.4; }
-
-        @keyframes floatBlob {
-            0% { transform: translateY(0px) rotate(0deg) scale(1); }
-            100% { transform: translateY(-25px) rotate(8deg) scale(1.05); }
-        }
-
-        .floating-polaroid {
-            position: absolute;
-            background: #FFF;
-            padding: 8px 8px 22px 8px;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border: 1px solid var(--border-soft);
-            font-family: var(--font-cute);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
-            pointer-events: none;
-            display: none;
-        }
-
-        @media (min-width: 900px) {
-            .floating-polaroid { display: block; }
-        }
-
-        .pol-1 { top: 15%; left: 8%; transform: rotate(-8deg); }
-        .pol-2 { bottom: 18%; left: 10%; transform: rotate(6deg); }
-        .pol-3 { top: 18%; right: 9%; transform: rotate(7deg); }
-        .pol-4 { bottom: 16%; right: 11%; transform: rotate(-5deg); }
-        .floating-polaroid img { width: 130px; height: 110px; object-fit: cover; border-radius: 4px; margin-bottom: 6px; }
-
-        .auth-card {
-            background: var(--bg-card);
-            border: 2px dashed var(--accent-pink);
-            border-radius: 28px;
-            padding: 44px 38px;
-            text-align: center;
-            max-width: 440px;
-            width: 100%;
-            box-shadow: var(--shadow-card);
-            position: relative;
-            background-image: linear-gradient(to bottom, #FFFFFF, #FAF6F0);
-        }
-
-        .auth-card::before {
-            content: "✿ congarden ✿";
-            position: absolute;
-            top: -16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent-pink-soft);
-            border: 1px dashed var(--accent-pink);
-            padding: 4px 18px;
-            border-radius: 20px;
-            font-family: var(--font-cute);
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
-
-        .auth-card h1 {
-            font-family: var(--font-title);
-            font-size: 3.2rem;
-            font-weight: 400;
-            line-height: 1;
-            margin-top: 10px;
-            margin-bottom: 6px;
-        }
-
-        .auth-card p.subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
-
-        /* Form Styling */
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            text-align: left;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .form-group label {
-            font-family: var(--font-ui);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 1px solid var(--border-soft);
-            background: var(--bg-paper);
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        .form-input:focus {
-            border-color: var(--accent-pink);
-            background: #FFF;
-            box-shadow: 0 0 0 3px var(--accent-pink-soft);
-        }
-
-        .btn-auth-submit {
-            background: var(--accent-pink);
-            color: #FFF;
-            border: none;
-            padding: 13px;
-            border-radius: 50px;
-            font-family: var(--font-ui);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 8px;
-            box-shadow: 0 4px 14px rgba(232, 180, 184, 0.4);
-        }
-
-        .btn-auth-submit:hover {
-            background: #DF9DA3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(232, 180, 184, 0.5);
-        }
-
-        .auth-toggle-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-top: 18px;
-        }
-
-        .auth-toggle-link {
-            color: var(--accent-pink);
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: underline;
-        }
 
         /* ==================== MAIN APP LAYOUT ==================== */
         .app-container {
@@ -368,7 +185,6 @@
             font-size: 0.9rem;
         }
         .user-name { font-size: 0.85rem; font-weight: 600; font-family: var(--font-ui); }
-        .btn-logout { background: none; border: none; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; }
 
         /* Content Viewport */
         .content-area {
@@ -413,7 +229,7 @@
 
         .btn-new-note:hover { background: #91A894; transform: translateY(-1px); }
 
-        /* Notes Masonry Grid */
+        /* Notes Grid */
         .notes-view {
             flex: 1;
             padding: 32px;
@@ -623,60 +439,8 @@
 </head>
 <body>
 
-    <!-- BEAUTIFUL SCRAPBOOK WELCOME / EMAIL AUTH OVERLAY -->
-    <div id="auth-overlay" class="auth-overlay">
-        <!-- Ambient Glowing Background Blobs -->
-        <div class="auth-bg-blob blob-1"></div>
-        <div class="auth-bg-blob blob-2"></div>
-        <div class="auth-bg-blob blob-3"></div>
-
-        <!-- Scrapbook Floating Polaroids -->
-        <div class="floating-polaroid pol-1">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" alt="Inspo">
-            <span>dreamy vibes 🌸</span>
-        </div>
-        <div class="floating-polaroid pol-2">
-            <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=300" alt="Inspo">
-            <span>color swatches ✨</span>
-        </div>
-        <div class="floating-polaroid pol-3">
-            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=300" alt="Inspo">
-            <span>cozy morning ☕</span>
-        </div>
-        <div class="floating-polaroid pol-4">
-            <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=300" alt="Inspo">
-            <span>ideas & sketches 🎨</span>
-        </div>
-
-        <div class="auth-card">
-            <h1>congarden</h1>
-            <p class="subtitle">Your digital scrapbook garden for collecting photos, ideas, links & random inspiration.</p>
-
-            <form id="auth-form" class="auth-form" onsubmit="handleAuthSubmit(event)">
-                <div class="form-group">
-                    <label for="auth-email">Email Address</label>
-                    <input type="email" id="auth-email" class="form-input" placeholder="yourname@gmail.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="auth-password">Password</label>
-                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required minlength="6">
-                </div>
-
-                <button type="submit" id="btn-auth-submit" class="btn-auth-submit">Enter My Garden ✿</button>
-            </form>
-
-            <div class="auth-toggle-text">
-                <span id="auth-toggle-msg">First time in the garden?</span> 
-                <span id="auth-toggle-link" class="auth-toggle-link" onclick="toggleAuthMode()">Create account</span>
-            </div>
-        </div>
-    </div>
-
     <!-- MAIN APP LAYOUT -->
     <div class="app-container">
-        
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="brand">
                 congarden <span class="decor">✿</span>
@@ -697,18 +461,16 @@
 
             <div class="user-profile-bar">
                 <div class="user-info">
-                    <div id="user-avatar-badge" class="user-avatar-badge">G</div>
-                    <span id="user-name" class="user-name">Gardener</span>
+                    <div class="user-avatar-badge">✿</div>
+                    <span class="user-name">Local Garden</span>
                 </div>
-                <button class="btn-logout" onclick="logout()">Sign Out</button>
             </div>
         </aside>
 
-        <!-- CONTENT VIEWPORT -->
         <main class="content-area">
             <header class="content-header">
                 <h2 id="current-folder-title" class="header-title">🌸 All Inspiration</h2>
-                <button class="btn-new-note" onclick="openEditor()">＋ New Note</button>
+                <button class="btn-new-note" onclick="createNewNote()">＋ New Note</button>
             </header>
 
             <div class="notes-view">
@@ -717,7 +479,6 @@
                 </div>
             </div>
         </main>
-
     </div>
 
     <!-- SCRAPBOOK EDITOR OVERLAY -->
@@ -748,95 +509,28 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
-        // Replace with your Firebase credentials
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+        // Storage keys for localStorage
+        const STORAGE_KEY_FOLDERS = 'congarden_folders';
+        const STORAGE_KEY_NOTES = 'congarden_notes';
 
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        let currentUser = null;
-        let isSignUpMode = false;
-        let folders = [];
-        let notes = [];
+        let folders = JSON.parse(localStorage.getItem(STORAGE_KEY_FOLDERS)) || [];
+        let notes = JSON.parse(localStorage.getItem(STORAGE_KEY_NOTES)) || [];
         let activeFolderId = 'all';
         let activeNoteId = null;
-        let saveTimeout = null;
 
-        /* Auth Mode Toggle */
-        function toggleAuthMode() {
-            isSignUpMode = !isSignUpMode;
-            const submitBtn = document.getElementById('btn-auth-submit');
-            const msg = document.getElementById('auth-toggle-msg');
-            const link = document.getElementById('auth-toggle-link');
-
-            if (isSignUpMode) {
-                submitBtn.innerText = "Create My Garden ✿";
-                msg.innerText = "Already have a garden?";
-                link.innerText = "Sign in instead";
-            } else {
-                submitBtn.innerText = "Enter My Garden ✿";
-                msg.innerText = "First time in the garden?";
-                link.innerText = "Create account";
-            }
-        }
-
-        /* Email Authentication Handling */
-        function handleAuthSubmit(event) {
-            event.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-
-            if (isSignUpMode) {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .catch(error => alert("Registration failed: " + error.message));
-            } else {
-                auth.signInWithEmailAndPassword(email, password)
-                    .catch(error => alert("Sign in failed: " + error.message));
-            }
-        }
-
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('auth-overlay').style.display = 'none';
-                const displayName = user.email.split('@')[0];
-                document.getElementById('user-name').innerText = displayName;
-                document.getElementById('user-avatar-badge').innerText = displayName.charAt(0).toUpperCase();
-                loadUserData();
-            } else {
-                currentUser = null;
-                document.getElementById('auth-overlay').style.display = 'flex';
-            }
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFolders();
+            renderNotes();
         });
 
-        function logout() { auth.signOut(); }
-
-        /* Sync Data */
-        function loadUserData() {
-            if (!currentUser) return;
-            db.collection('users').doc(currentUser.uid).collection('folders').onSnapshot(snapshot => {
-                folders = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderFolders();
-            });
-
-            db.collection('users').doc(currentUser.uid).collection('notes').orderBy('updatedAt', 'desc').onSnapshot(snapshot => {
-                notes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderNotes();
-            });
+        function saveToLocalStorage() {
+            localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(folders));
+            localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notes));
         }
 
-        /* Folders & Notes */
+        // Folder Functions
         function renderFolders() {
             const list = document.getElementById('folder-list');
             list.innerHTML = `
@@ -877,21 +571,25 @@
 
         function promptCreateFolder() {
             const name = prompt("Enter new folder name:");
-            if (name && currentUser) {
-                db.collection('users').doc(currentUser.uid).collection('folders').add({
-                    name: name,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+            if (name) {
+                const newFolder = { id: Date.now().toString(), name };
+                folders.push(newFolder);
+                saveToLocalStorage();
+                renderFolders();
             }
         }
 
         function deleteFolder(id) {
-            if (confirm("Delete folder?")) {
-                db.collection('users').doc(currentUser.uid).collection('folders').doc(id).delete();
+            if (confirm("Delete this folder? Notes inside won't be deleted.")) {
+                folders = folders.filter(f => f.id !== id);
+                notes.forEach(n => { if (n.folderId === id) n.folderId = null; });
+                saveToLocalStorage();
                 if (activeFolderId === id) selectFolder('all');
+                else renderFolders();
             }
         }
 
+        // Notes Functions
         function renderNotes() {
             const grid = document.getElementById('notes-grid');
             grid.innerHTML = '';
@@ -930,104 +628,106 @@
 
         function filterNotes() { renderNotes(); }
 
-        /* Editor Functions */
-        function openEditor(noteId = null) {
-            activeNoteId = noteId;
-            document.getElementById('editor-overlay').classList.add('active');
+        function createNewNote() {
+            const newNote = {
+                id: Date.now().toString(),
+                title: '',
+                text: '',
+                folderId: (activeFolderId === 'favorites' || activeFolderId === 'all') ? null : activeFolderId,
+                images: [],
+                links: [],
+                favorite: false
+            };
+            notes.unshift(newNote);
+            saveToLocalStorage();
+            openEditor(newNote.id);
+        }
 
-            if (noteId) {
-                const note = notes.find(n => n.id === noteId);
-                document.getElementById('editor-title').value = note.title || '';
-                document.getElementById('editor-text').value = note.text || '';
-                document.getElementById('fav-icon').innerText = note.favorite ? '♥' : '♡';
-                renderEditorMedia(note.images || [], note.links || []);
-            } else {
-                document.getElementById('editor-title').value = '';
-                document.getElementById('editor-text').value = '';
-                document.getElementById('fav-icon').innerText = '♡';
-                renderEditorMedia([], []);
-                saveNewNote();
-            }
+        function openEditor(noteId) {
+            activeNoteId = noteId;
+            const note = notes.find(n => n.id === noteId);
+            if (!note) return;
+
+            document.getElementById('editor-title').value = note.title || '';
+            document.getElementById('editor-text').value = note.text || '';
+            document.getElementById('fav-icon').innerText = note.favorite ? '♥' : '♡';
+            renderEditorMedia(note.images || [], note.links || []);
+
+            document.getElementById('editor-overlay').classList.add('active');
         }
 
         function closeEditor() {
             document.getElementById('editor-overlay').classList.remove('active');
             activeNoteId = null;
-        }
-
-        function saveNewNote() {
-            if (!currentUser) return;
-            const newDocRef = db.collection('users').doc(currentUser.uid).collection('notes').doc();
-            activeNoteId = newDocRef.id;
-            newDocRef.set({
-                title: '',
-                text: '',
-                folderId: activeFolderId === 'favorites' ? 'all' : activeFolderId,
-                images: [],
-                links: [],
-                favorite: false,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            renderNotes();
         }
 
         function autoSaveNote() {
-            if (!activeNoteId || !currentUser) return;
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-                db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({
-                    title: document.getElementById('editor-title').value,
-                    text: document.getElementById('editor-text').value,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }, 400);
+            if (!activeNoteId) return;
+            const note = notes.find(n => n.id === activeNoteId);
+            if (!note) return;
+
+            note.title = document.getElementById('editor-title').value;
+            note.text = document.getElementById('editor-text').value;
+            saveToLocalStorage();
         }
 
         function toggleFavorite() {
-            if (!activeNoteId || !currentUser) return;
+            if (!activeNoteId) return;
             const note = notes.find(n => n.id === activeNoteId);
-            const newState = !note.favorite;
-            document.getElementById('fav-icon').innerText = newState ? '♥' : '♡';
-            db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({ favorite: newState });
+            if (!note) return;
+
+            note.favorite = !note.favorite;
+            document.getElementById('fav-icon').innerText = note.favorite ? '♥' : '♡';
+            saveToLocalStorage();
         }
 
         function deleteCurrentNote() {
-            if (activeNoteId && currentUser && confirm("Delete this note?")) {
-                db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).delete();
+            if (activeNoteId && confirm("Delete this note?")) {
+                notes = notes.filter(n => n.id !== activeNoteId);
+                saveToLocalStorage();
                 closeEditor();
             }
         }
 
         function handlePhotoUpload(event) {
             const files = event.target.files;
-            if (!files.length || !activeNoteId || !currentUser) return;
+            if (!files.length || !activeNoteId) return;
+
+            const note = notes.find(n => n.id === activeNoteId);
+            if (!note) return;
 
             Array.from(files).forEach(file => {
-                const storageRef = storage.ref(`users/${currentUser.uid}/${activeNoteId}/${Date.now()}_${file.name}`);
-                storageRef.put(file).then(s => s.ref.getDownloadURL()).then(url => {
-                    const note = notes.find(n => n.id === activeNoteId);
-                    const updatedImages = [...(note.images || []), url];
-                    db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({ images: updatedImages });
-                    renderEditorMedia(updatedImages, note.links || []);
-                });
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    note.images.push(e.target.result);
+                    saveToLocalStorage();
+                    renderEditorMedia(note.images, note.links);
+                };
+                reader.readAsDataURL(file);
             });
         }
 
         function promptAddLink() {
             const url = prompt("Paste your inspiration link:");
-            if (url && activeNoteId && currentUser) {
+            if (url && activeNoteId) {
                 const note = notes.find(n => n.id === activeNoteId);
-                const updatedLinks = [...(note.links || []), url];
-                db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({ links: updatedLinks });
-                renderEditorMedia(note.images || [], updatedLinks);
+                if (note) {
+                    note.links.push(url);
+                    saveToLocalStorage();
+                    renderEditorMedia(note.images, note.links);
+                }
             }
         }
 
         function removeImage(imgUrl) {
-            if (!activeNoteId || !currentUser) return;
+            if (!activeNoteId) return;
             const note = notes.find(n => n.id === activeNoteId);
-            const updatedImages = note.images.filter(url => url !== imgUrl);
-            db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({ images: updatedImages });
-            renderEditorMedia(updatedImages, note.links || []);
+            if (!note) return;
+
+            note.images = note.images.filter(url => url !== imgUrl);
+            saveToLocalStorage();
+            renderEditorMedia(note.images, note.links);
         }
 
         function renderEditorMedia(images, links) {
