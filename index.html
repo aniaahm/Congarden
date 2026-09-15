@@ -5,40 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Congarden ✿ Personal Inspiration & Notes Garden</title>
 
-    <!-- Visual Aesthetic Fonts -->
+    <!-- Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,400;0,700;1,400&family=Imprima&family=Instrument+Serif:ital@0;1&family=Josefin+Sans:wght@300;400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase SDKs for Cloud Auth, Database & Storage -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
     <style>
-        /* ==================== AESTHETIC VISUAL SYSTEM ==================== */
+        /* ==================== CONGARDEN BRANDING & VISUAL SYSTEM ==================== */
         :root {
-            --bg-paper: #FAF7F2;
+            --bg-paper: #FAF6F0;
             --bg-card: #FFFFFF;
-            --bg-sidebar: rgba(243, 238, 231, 0.85);
+            --bg-sidebar: #F2ECE4;
             --accent-pink: #E8B4B8;
             --accent-pink-soft: #F9ECEE;
             --accent-sage: #A2B9A5;
             --accent-sage-soft: #EBF2EC;
-            --accent-lavender: #C5B4E3;
+            --accent-lavender: #D5C6E0;
             --accent-butter: #F7E7B4;
             --text-main: #4A3E3D;
             --text-muted: #8C7B79;
             --border-soft: #E6DDD5;
             --border-dashed: #D3C7BD;
             --shadow-subtle: 0 4px 20px rgba(74, 62, 61, 0.05);
-            --shadow-card: 0 12px 32px rgba(74, 62, 61, 0.1);
-            
+            --shadow-card: 0 12px 32px rgba(74, 62, 61, 0.09);
+
             --font-title: 'Instrument Serif', serif;
             --font-ui: 'Josefin Sans', sans-serif;
             --font-body: 'Imprima', sans-serif;
             --font-cute: 'Bellota', cursive;
+            --font-pixel: 'Press Start 2P', monospace;
         }
 
         * {
@@ -54,208 +55,190 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            position: relative;
+            background-image: 
+                radial-gradient(var(--border-dashed) 0.75px, transparent 0.75px),
+                radial-gradient(var(--accent-pink-soft) 1px, transparent 1px);
+            background-size: 24px 24px, 48px 48px;
+            background-position: 0 0, 12px 12px;
         }
 
-        /* Animated Ambient Background Gradients */
-        .ambient-bg {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+        ::selection { background: var(--accent-pink-soft); color: var(--text-main); }
+        input, textarea, button { font-family: inherit; }
 
-        .blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.45;
-            animation: float 14s ease-in-out infinite alternate;
-        }
-
-        .blob-1 { top: -10%; left: -5%; width: 50vw; height: 50vw; background: var(--accent-pink-soft); }
-        .blob-2 { bottom: -10%; right: -5%; width: 45vw; height: 45vw; background: var(--accent-sage-soft); animation-delay: -5s; }
-        .blob-3 { top: 40%; left: 35%; width: 35vw; height: 35vw; background: #FFF6E5; animation-delay: -9s; }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(25px, -20px) scale(1.05); }
-            100% { transform: translate(-15px, 15px) scale(0.95); }
-        }
-
-        /* Floating Petal Accents */
-        .petal {
-            position: fixed;
-            pointer-events: none;
-            user-select: none;
-            opacity: 0.35;
-            font-size: 1.2rem;
-            animation: fall 12s linear infinite;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.4; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* ==================== BEAUTIFIED WELCOME & AUTH OVERLAY ==================== */
+        /* ==================== ENHANCED BEAUTIFUL WELCOME / AUTH OVERLAY ==================== */
         .auth-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(250, 247, 242, 0.7);
+            background: rgba(250, 246, 240, 0.82);
             backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
             padding: 20px;
+            overflow: hidden;
         }
 
+        /* Decorative Scrapbook Background Ornaments */
+        .auth-bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.6;
+            z-index: -1;
+            animation: floatBlob 10s ease-in-out infinite alternate;
+        }
+        .blob-1 { top: 10%; left: 15%; width: 320px; height: 320px; background: var(--accent-pink); }
+        .blob-2 { bottom: 12%; right: 15%; width: 360px; height: 360px; background: var(--accent-sage); }
+        .blob-3 { top: 45%; left: 50%; transform: translate(-50%, -50%); width: 400px; height: 400px; background: var(--accent-lavender); opacity: 0.4; }
+
+        @keyframes floatBlob {
+            0% { transform: translateY(0px) rotate(0deg) scale(1); }
+            100% { transform: translateY(-25px) rotate(8deg) scale(1.05); }
+        }
+
+        .floating-polaroid {
+            position: absolute;
+            background: #FFF;
+            padding: 8px 8px 22px 8px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid var(--border-soft);
+            font-family: var(--font-cute);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            pointer-events: none;
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .floating-polaroid { display: block; }
+        }
+
+        .pol-1 { top: 15%; left: 8%; transform: rotate(-8deg); }
+        .pol-2 { bottom: 18%; left: 10%; transform: rotate(6deg); }
+        .pol-3 { top: 18%; right: 9%; transform: rotate(7deg); }
+        .pol-4 { bottom: 16%; right: 11%; transform: rotate(-5deg); }
+        .floating-polaroid img { width: 130px; height: 110px; object-fit: cover; border-radius: 4px; margin-bottom: 6px; }
+
         .auth-card {
-            background: rgba(255, 255, 255, 0.92);
+            background: var(--bg-card);
             border: 2px dashed var(--accent-pink);
             border-radius: 28px;
-            padding: 40px 36px;
+            padding: 44px 38px;
             text-align: center;
             max-width: 440px;
             width: 100%;
             box-shadow: var(--shadow-card);
             position: relative;
-            z-index: 1;
+            background-image: linear-gradient(to bottom, #FFFFFF, #FAF6F0);
         }
 
         .auth-card::before {
-            content: "🌸 ✿ 🌿";
+            content: "✿ congarden ✿";
             position: absolute;
-            top: -18px;
+            top: -16px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--bg-paper);
-            padding: 2px 14px;
-            border-radius: 20px;
-            font-size: 1.1rem;
+            background: var(--accent-pink-soft);
             border: 1px dashed var(--accent-pink);
+            padding: 4px 18px;
+            border-radius: 20px;
+            font-family: var(--font-cute);
+            font-size: 0.9rem;
+            color: var(--text-main);
         }
 
         .auth-card h1 {
             font-family: var(--font-title);
             font-size: 3.2rem;
             font-weight: 400;
-            margin-bottom: 4px;
+            line-height: 1;
+            margin-top: 10px;
+            margin-bottom: 6px;
         }
 
-        .auth-subtitle {
-            font-family: var(--font-cute);
+        .auth-card p.subtitle {
             color: var(--text-muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin-bottom: 24px;
+            line-height: 1.4;
         }
 
-        /* Auth Tabs */
-        .auth-tabs {
-            display: flex;
-            background: var(--bg-paper);
-            border-radius: 50px;
-            padding: 4px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-soft);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 8px 16px;
-            border: none;
-            background: transparent;
-            font-family: var(--font-ui);
-            font-weight: 600;
-            font-size: 0.88rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--text-muted);
-        }
-
-        .tab-btn.active {
-            background: #FFF;
-            color: var(--text-main);
-            box-shadow: var(--shadow-subtle);
-        }
-
+        /* Form Styling */
         .auth-form {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            text-align: left;
         }
 
-        .input-field {
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-family: var(--font-ui);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
             width: 100%;
             padding: 12px 16px;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 1px solid var(--border-soft);
             background: var(--bg-paper);
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
-        .input-field:focus { border-color: var(--accent-sage); background: #FFF; }
+        .form-input:focus {
+            border-color: var(--accent-pink);
+            background: #FFF;
+            box-shadow: 0 0 0 3px var(--accent-pink-soft);
+        }
 
-        .btn-action {
-            background: var(--accent-sage);
+        .btn-auth-submit {
+            background: var(--accent-pink);
             color: #FFF;
             border: none;
-            padding: 12px;
+            padding: 13px;
             border-radius: 50px;
             font-family: var(--font-ui);
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 0.95rem;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: var(--shadow-subtle);
+            transition: all 0.2s;
+            margin-top: 8px;
+            box-shadow: 0 4px 14px rgba(232, 180, 184, 0.4);
         }
 
-        .btn-action:hover { background: #91A894; transform: translateY(-1px); }
+        .btn-auth-submit:hover {
+            background: #DF9DA3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(232, 180, 184, 0.5);
+        }
 
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .auth-toggle-text {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-size: 0.8rem;
-            margin-bottom: 20px;
-            font-family: var(--font-ui);
+            margin-top: 18px;
         }
 
-        .auth-divider::before, .auth-divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--border-soft);
-        }
-
-        .btn-google {
-            background: #FFF;
-            border: 1px solid var(--border-soft);
-            padding: 11px 20px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: var(--font-ui);
+        .auth-toggle-link {
+            color: var(--accent-pink);
             font-weight: 600;
-            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-subtle);
-            width: 100%;
+            text-decoration: underline;
         }
-
-        .btn-google:hover { background: var(--accent-pink-soft); border-color: var(--accent-pink); }
 
         /* ==================== MAIN APP LAYOUT ==================== */
         .app-container {
@@ -263,30 +246,29 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            position: relative;
-            z-index: 1;
         }
 
         .sidebar {
-            width: 290px;
+            width: 280px;
             background: var(--bg-sidebar);
-            backdrop-filter: blur(10px);
             border-right: 1px solid var(--border-soft);
             display: flex;
             flex-direction: column;
-            padding: 24px 18px;
+            padding: 24px 16px;
             gap: 20px;
             flex-shrink: 0;
         }
 
         .brand {
             font-family: var(--font-title);
-            font-size: 2.3rem;
+            font-size: 2.4rem;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 0 4px;
+            padding: 0 8px;
         }
+
+        .brand span.decor { font-size: 1.2rem; color: var(--accent-pink); }
 
         .search-box { position: relative; }
         .search-box input {
@@ -294,10 +276,12 @@
             padding: 10px 14px 10px 36px;
             border-radius: 50px;
             border: 1px solid var(--border-soft);
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--bg-card);
             font-size: 0.9rem;
             outline: none;
+            transition: border-color 0.2s;
         }
+        .search-box input:focus { border-color: var(--accent-sage); }
         .search-box::before {
             content: "🔍";
             position: absolute;
@@ -328,6 +312,8 @@
             color: var(--text-muted);
         }
 
+        .btn-add-icon:hover { color: var(--text-main); }
+
         .folder-list {
             list-style: none;
             display: flex;
@@ -350,7 +336,7 @@
         }
 
         .folder-item:hover, .folder-item.active {
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--bg-card);
             box-shadow: var(--shadow-subtle);
         }
 
@@ -367,42 +353,46 @@
         }
 
         .user-info { display: flex; align-items: center; gap: 10px; }
-        .user-avatar {
-            width: 34px;
-            height: 34px;
+        .user-avatar-badge {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: var(--accent-pink);
+            color: #FFF;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #FFF;
-            font-weight: 600;
             font-family: var(--font-ui);
-            object-fit: cover;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
-
         .user-name { font-size: 0.85rem; font-weight: 600; font-family: var(--font-ui); }
         .btn-logout { background: none; border: none; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; }
 
-        /* Content Area */
+        /* Content Viewport */
         .content-area {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            background: transparent;
         }
 
         .content-header {
-            padding: 24px 36px;
+            padding: 24px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-soft);
-            background: rgba(250, 247, 242, 0.6);
-            backdrop-filter: blur(8px);
         }
 
-        .header-title { font-family: var(--font-title); font-size: 2.2rem; }
+        .header-title {
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
         .btn-new-note {
             background: var(--accent-sage);
@@ -414,23 +404,31 @@
             font-weight: 600;
             cursor: pointer;
             box-shadow: var(--shadow-subtle);
-            transition: transform 0.2s;
+            transition: transform 0.2s, background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .btn-new-note:hover { transform: translateY(-1px); }
+        .btn-new-note:hover { background: #91A894; transform: translateY(-1px); }
 
-        .notes-view { flex: 1; padding: 36px; overflow-y: auto; }
+        /* Notes Masonry Grid */
+        .notes-view {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
 
         .notes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 22px;
+            gap: 20px;
         }
 
         .note-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-card);
             border: 1px solid var(--border-soft);
-            border-radius: 18px;
+            border-radius: 16px;
             padding: 20px;
             cursor: pointer;
             transition: all 0.25s ease;
@@ -447,11 +445,33 @@
         }
 
         .note-card-title { font-family: var(--font-ui); font-weight: 600; font-size: 1.1rem; }
-        .note-card-snippet { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; max-height: 60px; overflow: hidden; }
-        .note-card-media-preview { width: 100%; height: 140px; border-radius: 10px; object-fit: cover; }
-        .note-card-footer { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: auto; }
+        .note-card-snippet {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            max-height: 60px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-        /* Scrapbook Editor */
+        .note-card-media-preview {
+            width: 100%;
+            height: 140px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .note-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: auto;
+            padding-top: 8px;
+        }
+
+        /* SCRAPBOOK NOTE EDITOR OVERLAY */
         .editor-overlay {
             position: fixed;
             inset: 0;
@@ -461,6 +481,7 @@
             flex-direction: column;
             overflow-y: auto;
         }
+
         .editor-overlay.active { display: flex; }
 
         .editor-header {
@@ -469,101 +490,220 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-soft);
-            background: rgba(250, 247, 242, 0.85);
+            background: rgba(250, 246, 240, 0.85);
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
-        .btn-back { background: none; border: none; font-family: var(--font-ui); font-size: 1rem; cursor: pointer; }
-        .editor-body { max-width: 760px; width: 100%; margin: 0 auto; padding: 40px 20px 100px 20px; display: flex; flex-direction: column; gap: 24px; }
-        .editor-title { font-family: var(--font-title); font-size: 2.8rem; border: none; outline: none; background: transparent; width: 100%; }
-        .editor-text { font-size: 1.05rem; line-height: 1.7; border: none; outline: none; background: transparent; resize: none; min-height: 150px; width: 100%; }
+        .btn-back {
+            background: none;
+            border: none;
+            font-family: var(--font-ui);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        .editor-toolbar { display: flex; gap: 12px; padding: 12px 0; border-top: 1px dashed var(--border-dashed); border-bottom: 1px dashed var(--border-dashed); }
-        .btn-tool { background: #FFF; border: 1px solid var(--border-soft); padding: 8px 16px; border-radius: 50px; font-family: var(--font-ui); font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .editor-body {
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 20px 100px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
 
-        .scrapbook-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
-        .polaroid-wrapper { background: #FFF; padding: 10px 10px 20px 10px; border-radius: 8px; box-shadow: var(--shadow-subtle); border: 1px solid var(--border-soft); position: relative; }
-        .polaroid-wrapper img { width: 100%; height: 160px; object-fit: cover; border-radius: 4px; }
-        .btn-remove-media { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.5); color: #FFF; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; }
+        .editor-title {
+            font-family: var(--font-title);
+            font-size: 2.8rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+        }
+
+        .editor-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            border: none;
+            outline: none;
+            background: transparent;
+            resize: none;
+            min-height: 150px;
+            width: 100%;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-top: 1px dashed var(--border-dashed);
+            border-bottom: 1px dashed var(--border-dashed);
+        }
+
+        .btn-tool {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-tool:hover { background: var(--accent-sage-soft); }
+
+        .scrapbook-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .polaroid-wrapper {
+            background: #FFF;
+            padding: 10px 10px 20px 10px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--border-soft);
+            position: relative;
+        }
+
+        .polaroid-wrapper img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .btn-remove-media {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(0,0,0,0.5);
+            color: #FFF;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
 
         .link-cards-container { display: flex; flex-direction: column; gap: 10px; }
-        .link-card { background: #FFF; border: 1px solid var(--border-soft); padding: 12px 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
+        .link-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+        }
+        .link-card:hover { border-color: var(--accent-pink); }
+        .link-info { display: flex; align-items: center; gap: 10px; }
         .link-url { font-size: 0.85rem; color: var(--accent-sage); word-break: break-all; }
 
         @media (max-width: 768px) {
             .app-container { flex-direction: column; }
             .sidebar { width: 100%; height: auto; padding: 16px; }
             .notes-view { padding: 16px; }
+            .editor-header { padding: 16px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Visual Background Gradients -->
-    <div class="ambient-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
-
-    <!-- Floating Organic Accents -->
-    <div class="petal" style="left: 10%; animation-delay: 0s;">✿</div>
-    <div class="petal" style="left: 30%; animation-delay: 3s;">🌸</div>
-    <div class="petal" style="left: 65%; animation-delay: 6s;">🌿</div>
-    <div class="petal" style="left: 85%; animation-delay: 2s;">✿</div>
-
-    <!-- BEAUTIFIED AUTHENTICATION OVERLAY -->
+    <!-- BEAUTIFUL SCRAPBOOK WELCOME / EMAIL AUTH OVERLAY -->
     <div id="auth-overlay" class="auth-overlay">
+        <!-- Ambient Glowing Background Blobs -->
+        <div class="auth-bg-blob blob-1"></div>
+        <div class="auth-bg-blob blob-2"></div>
+        <div class="auth-bg-blob blob-3"></div>
+
+        <!-- Scrapbook Floating Polaroids -->
+        <div class="floating-polaroid pol-1">
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300" alt="Inspo">
+            <span>dreamy vibes 🌸</span>
+        </div>
+        <div class="floating-polaroid pol-2">
+            <img src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=300" alt="Inspo">
+            <span>color swatches ✨</span>
+        </div>
+        <div class="floating-polaroid pol-3">
+            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=300" alt="Inspo">
+            <span>cozy morning ☕</span>
+        </div>
+        <div class="floating-polaroid pol-4">
+            <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=300" alt="Inspo">
+            <span>ideas & sketches 🎨</span>
+        </div>
+
         <div class="auth-card">
             <h1>congarden</h1>
-            <p class="auth-subtitle">your personal digital inspiration garden</p>
+            <p class="subtitle">Your digital scrapbook garden for collecting photos, ideas, links & random inspiration.</p>
 
-            <!-- Auth Mode Switcher -->
-            <div class="auth-tabs">
-                <button class="tab-btn active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
-                <button class="tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
-            </div>
+            <form id="auth-form" class="auth-form" onsubmit="handleAuthSubmit(event)">
+                <div class="form-group">
+                    <label for="auth-email">Email Address</label>
+                    <input type="email" id="auth-email" class="form-input" placeholder="yourname@gmail.com" required>
+                </div>
 
-            <!-- Email/Password Form -->
-            <form class="auth-form" id="auth-form" onsubmit="handleEmailAuth(event)">
-                <input type="email" id="auth-email" class="input-field" placeholder="Email address" required>
-                <input type="password" id="auth-password" class="input-field" placeholder="Password (min 6 chars)" required>
-                <button type="submit" id="auth-submit-btn" class="btn-action">Sign In</button>
+                <div class="form-group">
+                    <label for="auth-password">Password</label>
+                    <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required minlength="6">
+                </div>
+
+                <button type="submit" id="btn-auth-submit" class="btn-auth-submit">Enter My Garden ✿</button>
             </form>
 
-            <div class="auth-divider">or continuous with</div>
+            <div class="auth-toggle-text">
+                <span id="auth-toggle-msg">First time in the garden?</span> 
+                <span id="auth-toggle-link" class="auth-toggle-link" onclick="toggleAuthMode()">Create account</span>
+            </div>
+        </div>
+    </div>
 
-
-    <!-- MAIN GARDEN APPLICATION -->
+    <!-- MAIN APP LAYOUT -->
     <div class="app-container">
+        
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="brand">
-                congarden <span style="font-size:1.2rem; color:var(--accent-pink);">✿</span>
+                congarden <span class="decor">✿</span>
             </div>
 
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search garden..." oninput="filterNotes()">
+                <input type="text" id="search-input" placeholder="Search inspiration..." oninput="filterNotes()">
             </div>
 
             <div class="nav-section-title">
-                <span>My Folders</span>
+                <span>My Garden</span>
                 <button class="btn-add-icon" onclick="promptCreateFolder()" title="Create Folder">＋</button>
             </div>
 
-            <ul class="folder-list" id="folder-list"></ul>
+            <ul class="folder-list" id="folder-list">
+                <!-- Dynamic Folders -->
+            </ul>
 
             <div class="user-profile-bar">
                 <div class="user-info">
-                    <div id="user-avatar" class="user-avatar">?</div>
+                    <div id="user-avatar-badge" class="user-avatar-badge">G</div>
                     <span id="user-name" class="user-name">Gardener</span>
                 </div>
                 <button class="btn-logout" onclick="logout()">Sign Out</button>
             </div>
         </aside>
 
+        <!-- CONTENT VIEWPORT -->
         <main class="content-area">
             <header class="content-header">
                 <h2 id="current-folder-title" class="header-title">🌸 All Inspiration</h2>
@@ -571,12 +711,15 @@
             </header>
 
             <div class="notes-view">
-                <div class="notes-grid" id="notes-grid"></div>
+                <div class="notes-grid" id="notes-grid">
+                    <!-- Dynamic Notes -->
+                </div>
             </div>
         </main>
+
     </div>
 
-    <!-- EDITOR OVERLAY -->
+    <!-- SCRAPBOOK EDITOR OVERLAY -->
     <div id="editor-overlay" class="editor-overlay">
         <div class="editor-header">
             <button class="btn-back" onclick="closeEditor()">← Back to Garden</button>
@@ -604,8 +747,9 @@
         </div>
     </div>
 
-    <!-- LOGIC & AUTH IMPLEMENTATION -->
+    <!-- SCRIPT LOGIC -->
     <script>
+        // Replace with your Firebase credentials
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
             authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -621,56 +765,53 @@
         const storage = firebase.storage();
 
         let currentUser = null;
-        let authMode = 'signin';
+        let isSignUpMode = false;
         let folders = [];
         let notes = [];
         let activeFolderId = 'all';
         let activeNoteId = null;
         let saveTimeout = null;
 
-        /* Auth Mode Switcher */
-        function switchAuthTab(mode) {
-            authMode = mode;
-            document.getElementById('tab-signin').classList.toggle('active', mode === 'signin');
-            document.getElementById('tab-signup').classList.toggle('active', mode === 'signup');
-            document.getElementById('auth-submit-btn').innerText = mode === 'signin' ? 'Sign In' : 'Create Account';
+        /* Auth Mode Toggle */
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            const submitBtn = document.getElementById('btn-auth-submit');
+            const msg = document.getElementById('auth-toggle-msg');
+            const link = document.getElementById('auth-toggle-link');
+
+            if (isSignUpMode) {
+                submitBtn.innerText = "Create My Garden ✿";
+                msg.innerText = "Already have a garden?";
+                link.innerText = "Sign in instead";
+            } else {
+                submitBtn.innerText = "Enter My Garden ✿";
+                msg.innerText = "First time in the garden?";
+                link.innerText = "Create account";
+            }
         }
 
-        /* Email Authentication */
-        function handleEmailAuth(event) {
+        /* Email Authentication Handling */
+        function handleAuthSubmit(event) {
             event.preventDefault();
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
 
-            if (authMode === 'signup') {
+            if (isSignUpMode) {
                 auth.createUserWithEmailAndPassword(email, password)
-                    .catch(err => alert("Sign up error: " + err.message));
+                    .catch(error => alert("Registration failed: " + error.message));
             } else {
                 auth.signInWithEmailAndPassword(email, password)
-                    .catch(err => alert("Sign in error: " + err.message));
+                    .catch(error => alert("Sign in failed: " + error.message));
             }
         }
 
-        function loginGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).catch(err => alert("Google Sign-In failed: " + err.message));
-        }
-
-        function logout() { auth.signOut(); }
-
-        /* Auth Listener */
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 document.getElementById('auth-overlay').style.display = 'none';
-                
-                const avatarEl = document.getElementById('user-avatar');
-                if (user.photoURL) {
-                    avatarEl.innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-                } else {
-                    avatarEl.innerText = (user.email || 'U').charAt(0).toUpperCase();
-                }
-                document.getElementById('user-name').innerText = user.displayName || user.email.split('@')[0];
+                const displayName = user.email.split('@')[0];
+                document.getElementById('user-name').innerText = displayName;
+                document.getElementById('user-avatar-badge').innerText = displayName.charAt(0).toUpperCase();
                 loadUserData();
             } else {
                 currentUser = null;
@@ -678,7 +819,9 @@
             }
         });
 
-        /* Data Sync */
+        function logout() { auth.signOut(); }
+
+        /* Sync Data */
         function loadUserData() {
             if (!currentUser) return;
             db.collection('users').doc(currentUser.uid).collection('folders').onSnapshot(snapshot => {
@@ -692,7 +835,7 @@
             });
         }
 
-        /* Folder Management */
+        /* Folders & Notes */
         function renderFolders() {
             const list = document.getElementById('folder-list');
             list.innerHTML = `
@@ -742,13 +885,12 @@
         }
 
         function deleteFolder(id) {
-            if (confirm("Delete this folder? Notes inside will remain safely stored.")) {
+            if (confirm("Delete folder?")) {
                 db.collection('users').doc(currentUser.uid).collection('folders').doc(id).delete();
                 if (activeFolderId === id) selectFolder('all');
             }
         }
 
-        /* Note Grid & Search */
         function renderNotes() {
             const grid = document.getElementById('notes-grid');
             grid.innerHTML = '';
@@ -770,14 +912,12 @@
                 card.className = 'note-card';
                 card.onclick = () => openEditor(note.id);
 
-                let mediaHTML = note.images && note.images.length > 0 
-                    ? `<img src="${note.images[0]}" class="note-card-media-preview" alt="Inspiration preview">` 
-                    : '';
+                let mediaHTML = note.images && note.images.length > 0 ? `<img src="${note.images[0]}" class="note-card-media-preview" alt="">` : '';
 
                 card.innerHTML = `
                     ${mediaHTML}
                     <div class="note-card-title">${note.title || 'Untitled Note'}</div>
-                    <div class="note-card-snippet">${note.text || 'Write anything...'}</div>
+                    <div class="note-card-snippet">${note.text || 'No additional text...'}</div>
                     <div class="note-card-footer">
                         <span>${note.images ? note.images.length : 0} 📷 • ${note.links ? note.links.length : 0} 🔗</span>
                         <span>${note.favorite ? '♡' : ''}</span>
@@ -862,7 +1002,7 @@
 
             Array.from(files).forEach(file => {
                 const storageRef = storage.ref(`users/${currentUser.uid}/${activeNoteId}/${Date.now()}_${file.name}`);
-                storageRef.put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+                storageRef.put(file).then(s => s.ref.getDownloadURL()).then(url => {
                     const note = notes.find(n => n.id === activeNoteId);
                     const updatedImages = [...(note.images || []), url];
                     db.collection('users').doc(currentUser.uid).collection('notes').doc(activeNoteId).update({ images: updatedImages });
@@ -872,7 +1012,7 @@
         }
 
         function promptAddLink() {
-            const url = prompt("Paste your link (Instagram, Pinterest, YouTube, web):");
+            const url = prompt("Paste your inspiration link:");
             if (url && activeNoteId && currentUser) {
                 const note = notes.find(n => n.id === activeNoteId);
                 const updatedLinks = [...(note.links || []), url];
@@ -893,13 +1033,13 @@
             document.getElementById('editor-gallery').innerHTML = images.map(url => `
                 <div class="polaroid-wrapper">
                     <button class="btn-remove-media" onclick="removeImage('${url}')">×</button>
-                    <img src="${url}" alt="Photo">
+                    <img src="${url}" alt="">
                 </div>
             `).join('');
 
             document.getElementById('editor-links').innerHTML = links.map(url => `
                 <a href="${url}" target="_blank" class="link-card">
-                    <span>🔗 <span class="link-url">${url}</span></span>
+                    <div class="link-info"><span>🔗</span><span class="link-url">${url}</span></div>
                     <span>↗</span>
                 </a>
             `).join('');
